@@ -1,2 +1,108 @@
+<head>
+<%= stylesheet_link_tag "bootstrap" %>
+
+<%= stylesheet_link_tag "signin" %>
+
+<%= stylesheet_link_tag "style" %>
+</head>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+<body>
 <h1>Login#base</h1>
 <p>Find me in app/views/login/base.html.erb</p>
+<div class="primo">
+    <div class="header">
+        <div class="logo" >
+            
+        </div>
+        <ul class="menu">
+
+      
+            <li>
+                <ul class="sottomenu">
+                    <li>
+                    <a class="rounded-button share" href="" >
+                        <ion-icon class="resize_3" name="share-social-sharp" size="large" ></ion-icon>  
+                    </a>
+                    </li>
+                    <li>
+                        <h1 class="resize">Condividi con i tuoi amici</h1>
+                    </li>
+                </ul>
+            </li>
+     
+           <li>
+               <a class="rounded-button" href="">
+                <ion-icon class="resize_3" name="logo-instagram" size="large" ></ion-icon>
+               </a>
+           </li>
+      
+           <li>
+            <a class="rounded-button" href="">
+                <ion-icon class="resize_3" name="logo-twitter" size="large" ></ion-icon>  
+              </a>
+            </li>
+      
+            <li>
+            <a class="rounded-button" href="">
+                <ion-icon class="resize_3" name="logo-facebook" size="large" ></ion-icon>  
+              </a>
+            </li>
+       
+        </ul>
+    </div>
+</div>
+    <div class="second">
+
+        <div class="in-sec">
+        <label class="toggle" for="myToggle">
+            <input class="toggle_input" type="checkbox" id="myToggle" onclick="dark_light()">
+            <div class="toggle_fill"></div>
+             
+        </label>
+    </div>
+            
+        <div class="dati " id="01" >
+                
+            <form name="myform"  action="./Db_conn/verifica_cred.php" method="POST" class="form-signin">
+            
+                <h1 class="resize_1">Trova il tuo manager!</h1>
+                <br>   
+                <!-- class=form-control -->
+                <input type="text" id=40 name="myEmail" class="form-control form-input " placeholder="mail/username" required autofocus>
+                <input type="password" id=41 name="myPassword" class="form-control form-input " placeholder="password"required>        
+                <div class="resize_4">
+                    <input type="checkbox" name="rememberMe" id="rmb"/>
+                    <label for="rmb">Remember me</label>          
+                </div>
+                <button type="submit" onclick="setta_session()" class="btn btn-info login_B">Login</button>     
+                <button type="button" name="Registrati" id="02" class="btn btn-info Sign-up " onclick="bottone_premuto()">Sign-up</button>          
+            </form>
+           
+        </div>
+
+    <div class="dati_1 hide" id="03">
+        
+        <form name="myform_1" action="./Db_conn/inserisci_utente.php" method="POST" class="myform_1" align-items="center">
+            
+            
+            <h1>Iscriviti ora! </h1>
+            
+            
+            <br>
+            <input type="email" name="Email_reg" class=" form-control form-input-reg" placeholder="mail" required  autofocus>
+            <input type="text" name="Username_reg" class=" form-control form-input-reg" placeholder="username" required>
+            <input type="password" name="Password_reg" class=" form-control form-input-reg" placeholder="password" required>        
+            
+            <button type="submit" name="Registrati" id="04" class="btn btn-info Sign-up-reg " >Sign-up</button> 
+            <button type="button"  onclick="bottone_premuto()" name="back" id="05" class="back-reg" >back</button>              
+        </form>
+        
+    </div>
+
+    </div>
+
+</body>
+
