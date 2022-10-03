@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users 
+  devise_for :users , controllers: {
+    sessions: 'users/sessions',
+    registrations: 'user/registration'
+  }
  
   get 'login/base'  # porta a app/views/login/base.html.erb
   get "/homepage", to: "homepage#cliente"
