@@ -1,18 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users , controllers: {
+  get 'users/profile'
+  devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'user/registration'
+    registrations: 'users/registrations'
   }
- 
-  get 'login/base'  # porta a app/views/login/base.html.erb
-  get "/homepage", to: "homepage#cliente"
+  get '/u/:id', to: 'users#profile', as: 'user'
 
-  # root "/homepage#cliente"
+  resources :posts
+  get 'about', to: 'pages#about'
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  
-  
-
-  
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # Defines the root path route ("/")
+  root 'pages#home'
 end
-

@@ -1,0 +1,78 @@
+◘ fai il display dei dati utente (se man o no ) in una schermata attraverso current_user.
+◘  PROBLEMA AUTO LOGIN DOPO REGISTRAZIONE
+// gemme oauth
+-----------------------minuto 47 Intro to Devise in Rails 7 | Ruby on Rails for Beginners Part 2
++ rails g devise:install
+
+// aggiungere pagine e controller associato 
+
+   rails g controller users profile
+// per aggiungere campi
+                   questa parte boh
+rails g migration add_name_to_user name
++ rails db:migrate
+
+rails g devise:controllers users  // dopo 
+
+- DEFINE MODEL
+A model is a Ruby class that is used to represent data.
+Additionally, models can interact with the application's database through a
+feature of Rails called Active Record.
+To define a model, we will use the model generator:
+
+$ bin/rails generate model Article title:string body:text
+
+/////////////////////////////////////////////////
+bin/rails server   manda online il server
+
+-Creare route 
+
+config/routes :
+    get "/articles", to: "articles#index"
+    bin/rails generate controller Articles index --skip-routes
+
+
+bin/rails generate controller Homepage cliente --skip-routes
+
+prova a generare quella di admin dando 
+
+bin/rails generate controller Homepage admin --skip-routes
+
+-AGGIUNGERE GEMMA
+
+scrivi nel Gemfile e lancia "bundle install"
+
+per far funzionare device : rails generate devise:install
+
+- DEVICE
+181 lunghezza password
+27 email di conferma    metterne una valida
+
+
+-- generazione "utente" per autenticazione
+
+   rails generate devise User : 
+
+    create    db/migrate/20220930150025_devise_create_users.rb
+      create    app/models/user.rb
+      invoke    test_unit
+      create      test/models/user_test.rb
+      create      test/fixtures/users.yml
+      insert    app/models/user.rb
+       route  devise_for :users
+
+-- MIGRAZIONE 
+▪Bisogna quindi aggiornare lo schema del DB : rake db:migrate
+
+-- VARIE VISTE LOGIN/REG ecc
+rails generate devise:views users
+  non capisco bene dove sia quella di login , views/layouts/applications.html.erb
+
+-- MAILER 
+▪ Infine è necessario configurare il mailer :
+config/enviroment/development.rb
+	config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+-- FORZARE AUTENTICAZIONE
+  in controller homepage
+   before_action :authenticate_user!
