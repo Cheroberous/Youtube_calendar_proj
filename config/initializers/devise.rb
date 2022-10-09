@@ -5,21 +5,7 @@
 # are not: uncommented lines are intended to protect your configuration from
 # breaking changes in upgrades (i.e., in the event that future versions of
 # Devise change the default values for those options).
-
-class TurboFailureApp < Devise::FailureApp
-  def respond
-    if request_format == :turbo_stream
-      :redirect
-    else
-      super
-    end
-  end
-
-  def skip_format?
-    %w[html turbo_stream].include? request_format.to_s
-  end
-end
-
+#
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -28,13 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '730f0fa4c9fd7bb3b31cd1b248c44b43ae615c098515a43bf12b775e56ab1c147bb60d8e0e75685c0529b398870f1bbc5478459292cc0f23937281f14d0c5c0d'
-
-  config.parent_controller = 'TurboDeviseController'
-  config.navigational_formats = ['*/*', :html, :turbo_stream]
-  config.warden do |manager|
-    manager.failure_app = TurboFailureApp
-  end
+  # config.secret_key = '6e1e64d2323e5275b074b9722143e6ed6c6c153bc6e563a0a23f2bcddaedeaf9f16e2290a5e43df945830369a3da03ee7144d5b6fb92b8f748152b5059d5251d'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -44,14 +24,9 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'desilvestri.1895042@studenti.uniroma1.it'
-  
-  config.omniauth :google_oauth2, Rails.application.credentials.dig(:google_oauth_client_id),Rails.application.credentials.dig(:google_oauth_client_secret)
+  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
 
-  #config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
-  #config.omniauth :google_oauth2, '222073962333-i07d71cou9fb71llbg8bolbp6n39ads9.apps.googleusercontent.com', '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'
-
-  
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
@@ -152,7 +127,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '33598df140230d95fd70e00cb956799b702b63fda66c31998fe5c8ccc38754c33691d90f0b4a252568c2b4a0a19467bd4d1958618883a8432e4edb4278f2ff6a'
+  # config.pepper = 'cf738b1e90ead1d9b7a7b113c937d5480f9d15eb95926b7f171b4afa3957176436bd089bced4b456c79a31612ab3dfc631045ca3dfb7d78d2f21f37014086b25'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -289,7 +264,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  config.navigational_formats = ['*/*', :html, :turbo_html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
