@@ -1,5 +1,5 @@
 
-class ProfileController < ApplicationController
+class ClienteController < ApplicationController
 
     before_action:require_user_logged_in!
 

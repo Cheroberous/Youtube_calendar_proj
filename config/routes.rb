@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/profile' => 'profile#index'
+  get '/profile/nameandrole' => 'profile#nameandrole'
+
+  get '/cliente' => 'cliente#index'
+  get '/manager' => 'manager#index'
   # Defines the root path route ("/")
   # root "articles#index"
 end

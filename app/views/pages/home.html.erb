@@ -131,13 +131,16 @@
 
 </section>
 
-<!--Servizi-->
+<!--Servizi cliente non loggato-->
+
+<% if !current_user%>
 <section class="features7 cid-rsqniVZ6fy" id="features07-5h">
     
     
-    <div class="container">
+    <div class="container"> 
+        
         <div class="mbr-row mbr-black">
-
+        
             <div class="mbr-col-lg-6 mbr-col-md-12 mbr-col-sm-12 md-pb">
                 <div class="card-item1">
                     <div class="title-wrap align-center">
@@ -174,10 +177,61 @@
                     </div>
                 </div>
             </div>
+            
+        </div>
+        
+        
+    </div>
+    
+</section>
+<% end%>
+
+<!--Servizi cliente loggato-->
+<% if current_user%>
+<section>
+    <div class="container">
+        <div style="display:flex; justify-content: center; padding-top:2rem">
+            <% if current_user.ruolo=="cliente"%>
+            <div class="mbr-col-lg-6 mbr-col-md-12 mbr-col-sm-12 md-pb">
+                <div class="card-item1">
+                    <div class="title-wrap align-center">
+                        <div class="title-block">
+                            <h2 class="title1 mbr-fonts-style mbr-black mbr-semibold display-2">Trova il tuo Manager</h2>
+                            <p class="text1 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Scorri una lista di manager e seleziona quello a cui affiliarti</p>
+                            <div class="mbr-section-btn mbr-pt-3">
+                            <a class="btn-primary btn display-4"  href="cliente">
+                            <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path></svg>
+                            </span>Inizia</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% else %>
+            <div class="mbr-col-lg-6 mbr-col-md-12 mbr-col-sm-12">
+                <div class="card-item2">
+                    <div class="title-wrap align-center">
+                        <div class="title-block">
+                            <h3 class="subtitle2 mbr-pb-2 mbr-black mbr-fonts-style mbr-semibold display-4"></h3>
+                            <h2 class="title2 mbr-fonts-style mbr-black mbr-semibold display-2">Gestisci i tuoi clienti</h2>
+                            <p class="text2 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Visualizza e gestisci l'andamento dei canali Youtube dei tuoi clienti</p>
+                            <div class="mbr-section-btn mbr-pt-3">
+                            <a class="btn-primary btn display-4"  href="manager">
+                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
+                                <path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path>
+                                </svg>
+                                </span>
+                                Inizia
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%end%>
         </div>
     </div>
 </section>
-
+<%end %>
 
 <!--Social Network Sito Web-->
 <section class="mbr-section content1 cid-rsqoyhM5Ed" id="social04-5n">
