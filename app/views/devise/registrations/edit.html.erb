@@ -1,43 +1,120 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<!DOCTYPE html>
+<html amp >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  
+  <title>ManageMyYoutube</title>
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <section style="background-color: white;">
+  <div class="container py-5">
+    <%def withoutLast5(user)
+        if current_user.avatar_url
+          return current_user.avatar_url[0..-6]+"s580-c"
+        else 
+          return "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg"
+        end
+      end    
+    %>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: {turbo: "false"}) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="field">
+          <%if resource.avatar.attached? %>
+            <%= image_tag resource.avatar,class:"rounded-circle",height:150,width:150 %>
+          <%else%>
+            <%= image_tag "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg", height:100,width:100, class:"rounded-circle"%>
+          <%end%>
+        </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <div class="field">
+        <%= f.file_field :avatar%>
+      </div>
+        </div>
+      </div>
+      
+        <div class="col-lg-8">
+          
+            <div class="card mb-4">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-sm-3 mt-2">
+                    <p class="mb-0">Full Name</p>
+                  </div>
+                  <div class="col-sm-9">              
+                    <%= f.text_field :full_name, autofocus: true,class:"form-control text-capitalize" %>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-sm-3 mt-2">
+                    <p class="mb-0">Email</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email",class:"form-control" %>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-sm-3 mt-2">
+                    <p class="mb-0">Nuova Password</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <%= f.password_field :password, autocomplete: "new-password",class:"form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3 mt-2">
+                    <p class="mb-0">Conferma Password</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password",class:"form-control" %>
+                  </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3 mt-2">
+                    <p class="mb-0">Password Corrente</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <%= f.password_field :current_password, autocomplete: "new-password",class:"form-control" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Submit Button-->
+            <div class="row">
+              <%= f.submit "Modifica", class:"btnupdate",style:"font-size:large"%>
+            </div>
+            <div class="row">
+              <a class="linkupdate" href="/profile">Annulla</a>
+            </div>
+            <% end %>
+            <div class="row">
+              <%= button_to "Elimina il mio account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class:"btnupdate", style:"color:red; border-color:rgb(197, 197, 197)" %>
+            </div>
+          
+        </div>
+      
+    </div>
   </div>
+</section>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+</body>
+</html>

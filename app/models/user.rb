@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :omniauthable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, omniauth_providers: [:google_oauth2]
 
+  
+
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -15,4 +18,6 @@ class User < ApplicationRecord
       # user.skip_confirmation!
     end
   end
+  
+  has_one_attached :avatar
 end
