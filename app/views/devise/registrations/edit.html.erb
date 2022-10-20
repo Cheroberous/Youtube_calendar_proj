@@ -31,7 +31,7 @@
           <%if resource.avatar.attached? %>
             <%= image_tag resource.avatar,class:"rounded-circle",height:150,width:150 %>
           <%else%>
-            <%= image_tag "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg", height:100,width:100, class:"rounded-circle"%>
+            <%= image_tag withoutLast5(current_user), height:100,width:100, class:"rounded-circle"%>
           <%end%>
         </div>
 
@@ -66,8 +66,10 @@
                   </div>
                 </div>
 
-                <hr>
+                
 
+            <% if current_user.provider!="google_oauth2"%>
+                <hr>
                 <div class="row">
                   <div class="col-sm-3 mt-2">
                     <p class="mb-0">Nuova Password</p>
@@ -85,7 +87,7 @@
                     <%= f.password_field :password_confirmation, autocomplete: "new-password",class:"form-control" %>
                   </div>
                 </div>
-          
+            <% end %>
             <% if current_user.provider=="google_oauth2"%>
 
                 <hr>
@@ -112,20 +114,17 @@
 
             <%end%>
 
-           
-
-                 <!--<h2><%= current_user.provider%></h2>-->
-            <% if current_user.provider=="google_oauth2"%>
+            <% if current_user.provider=="google_oauth2" && !current_user.ruolo%>
             <!--<h2> proprio con oauth </h2>-->
             <div class="row">
-                  <div class="col-sm-3 mt-2">
-                    <p class="mb-0">scegli ruolo</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <%= f.label :mager_user_azienda%> 
-                    <%= f.text_field :ruolo, autocomplete: "scegli ruolo",class:"form-control" %>
-                  </div>
-                </div>
+              <div class="col-sm-3 mt-2">
+                <p class="mb-0">Scegli ruolo</p>
+              </div>
+              <div class="col-sm-3">
+                <%= f.select :ruolo, [["Cliente", "cliente"], ["Manager", "manager"]], {}, {class: "form-control"} %>
+              </div>
+              <p class="mt-3" style="color:red">Devi scegliere un ruolo per poter accedere alla funzionalità del sito !</p>
+            </div>
 
             <%else%>
             <%end%>
