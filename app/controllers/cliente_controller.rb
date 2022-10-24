@@ -6,4 +6,7 @@ class ClienteController < ApplicationController
     def index
     end
 
+    def function
+    end
+
 end

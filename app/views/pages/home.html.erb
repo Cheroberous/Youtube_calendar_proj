@@ -30,35 +30,35 @@
 
   <section class="cid-rslFJC9ynI" id="menu01-4n">
 	
-	<!-- NAVBAR -->
-	<nav class="navbar navbar-dropdown navbar-expand-lg navbar-fixed-top">
-		<div class="menu-container container-fluid">
+	<!-- mine-navbar -->
+	<nav class="mine-navbar mine-navbar-dropdown mine-navbar-expand-lg mine-navbar-fixed-top">
+		<div class="menu-mine-container mine-container-fluid">
 			
-			<div class="navbar-brand">
-				<div class="navbar-logo">
+			<div class="mine-navbar-brand">
+				<div class="mine-navbar-logo">
 					<img src="/assets/local/logomyytmanager.png" style="width:80px;padding-right:10px">
 				</div>
-				<span class="navbar-caption-wrap"><a class="navbar-caption mbr-semibold text-black display-5" href="/">ManageMyYoutube</a></span>
+				<span class="mine-navbar-caption-wrap"><a class="mine-navbar-caption mbr-semibold text-black display-5" href="/">ManageMyYoutube</a></span>
 			</div>
 
-            <div class="btns">
+            <div class="mine-btns">
                 <% if current_user %>
-                    <div class="navbar-buttons mbr-section-btn d-flex">
-                        <a class="btn btn-md btn-black mbr-semibold display-7" href="profile">Profile</a>
+                    <div class="mine-navbar-buttons mbr-section-mine-btn d-flex">
+                        <a class="mine-btn mine-btn-md mine-btn-black mbr-semibold display-7" href="profile">Profile</a>
                     </div>
-                    <div class="navbar-buttons mbr-section-btn d-flex">
-                        <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, class:"btnlogout" %>
+                    <div class="mine-navbar-buttons mbr-section-mine-btn d-flex">
+                        <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, class:"mine-btnlogout" %>
                     </div>
                 
                 <% else%>
-                <div class="navbar-buttons mbr-section-btn d-flex">
+                <div class="mine-navbar-buttons mbr-section-mine-btn d-flex">
                 
-                    <a class="btn btn-md btn-white mbr-semibold display-7" href="users/sign_in">Login</a>
+                    <a class="mine-btn mine-btn-md mine-btn-white mbr-semibold display-7" href="users/sign_in">Login</a>
                     <%= link_to "Login", new_user_session_path %>
                     
                 </div>
-                <div class="navbar-buttons mbr-section-btn d-flex">
-                    <a class="btn btn-md btn-black mbr-semibold display-7" href="users/sign_up">Sign Up</a>
+                <div class="mine-navbar-buttons mbr-section-mine-btn d-flex">
+                    <a class="mine-btn mine-btn-md mine-btn-black mbr-semibold display-7" href="users/sign_up">Sign Up</a>
                 </div>
                 <%end %>
             </div>
@@ -74,7 +74,7 @@
     
 
     <div class="mbr-overlay"></div>
-    <div class="container">
+    <div class="mine-container">
 
         <div class="wrapper">
             <div class="title-wrap mbr-pb-5 align-center">
@@ -137,7 +137,7 @@
 <section class="features7 cid-rsqniVZ6fy" id="features07-5h">
     
     
-    <div class="container"> 
+    <div class="mine-container"> 
         
         <div class="mbr-row mbr-black">
         
@@ -148,9 +148,9 @@
                             <h3 class="subtitle1 mbr-pb-2 mbr-fonts-style mbr-black mbr-semibold display-4">Registrati come un</h3>
                             <h2 class="title1 mbr-fonts-style mbr-black mbr-semibold display-2">Cliente</h2>
                             <p class="text1 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Registrati come cliente e cerca fra migliaia di manager a cui affiliarti.</p>
-                            <div class="mbr-section-btn mbr-pt-3">
-                            <a class="btn-primary btn display-4"  href="users/sign_up">
-                            <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path></svg>
+                            <div class="mbr-section-mine-btn mbr-pt-3">
+                            <a class="mine-btn-primary mine-btn display-4"  href="users/sign_up">
+                            <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-mine-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path></svg>
                             </span>Inizia</a></div>
                         </div>
                     </div>
@@ -164,9 +164,9 @@
                             <h3 class="subtitle2 mbr-pb-2 mbr-black mbr-fonts-style mbr-semibold display-4">Registrati come un</h3>
                             <h2 class="title2 mbr-fonts-style mbr-black mbr-semibold display-2">Manager</h2>
                             <p class="text2 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Offri i tuoi servizi in qualità di manager per uno o più clienti.</p>
-                            <div class="mbr-section-btn mbr-pt-3">
-                            <a class="btn-primary btn display-4"  href="users/sign_up">
-                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn">
+                            <div class="mbr-section-mine-btn mbr-pt-3">
+                            <a class="mine-btn-primary mine-btn display-4"  href="users/sign_up">
+                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-mine-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
                                 <path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path>
                                 </svg>
@@ -189,7 +189,7 @@
 <!--Servizi cliente loggato-->
 <% if current_user%>
 <section>
-    <div class="container">
+    <div class="mine-container">
         <div style="display:flex; justify-content: center; padding-top:2rem">
             <% if current_user.ruolo=="cliente"%>
             <div class="mbr-col-lg-6 mbr-col-md-12 mbr-col-sm-12 md-pb">
@@ -198,10 +198,29 @@
                         <div class="title-block">
                             <h2 class="title1 mbr-fonts-style mbr-black mbr-semibold display-2">Trova il tuo Manager</h2>
                             <p class="text1 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Scorri una lista di manager e seleziona quello a cui affiliarti</p>
-                            <div class="mbr-section-btn mbr-pt-3">
-                            <a class="btn-primary btn display-4"  href="cliente">
-                            <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path></svg>
+                            <div class="mbr-section-mine-btn mbr-pt-3">
+                            <a class="mine-btn-primary mine-btn display-4"  href="cliente">
+                            <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-mine-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path></svg>
                             </span>Inizia</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mbr-col-lg-6 mbr-col-md-12 mbr-col-sm-12">
+                <div class="card-item2">
+                    <div class="title-wrap align-center">
+                        <div class="title-block">
+                            <h2 class="title2 mbr-fonts-style mbr-black mbr-semibold display-2">Gestisci il tuo canale</h2>
+                            <p class="text2 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Controlla e gestisci il tuo canale Youtube</p>
+                            <div class="mbr-section-mine-btn mbr-pt-3">
+                            <a class="mine-btn-primary mine-btn display-4"  href="cliente/function">
+                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-mine-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
+                                <path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path>
+                                </svg>
+                                </span>
+                                Inizia
+                                </a></div>
                         </div>
                     </div>
                 </div>
@@ -214,9 +233,9 @@
                             <h3 class="subtitle2 mbr-pb-2 mbr-black mbr-fonts-style mbr-semibold display-4"></h3>
                             <h2 class="title2 mbr-fonts-style mbr-black mbr-semibold display-2">Gestisci i tuoi clienti</h2>
                             <p class="text2 mbr-fonts-style mbr-black mbr-regular mbr-pt-2 display-7">Visualizza e gestisci l'andamento dei canali Youtube dei tuoi clienti</p>
-                            <div class="mbr-section-btn mbr-pt-3">
-                            <a class="btn-primary btn display-4"  href="manager">
-                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-btn">
+                            <div class="mbr-section-mine-btn mbr-pt-3">
+                            <a class="mine-btn-primary mine-btn display-4"  href="manager">
+                                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont mbr-iconfont-mine-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
                                 <path d="M4.6 22.6L15.2 12 4.6 1.4 6 0l12 12L6 24z"></path>
                                 </svg>
@@ -235,7 +254,7 @@
 
 <!--Social Network Sito Web-->
 <section class="mbr-section content1 cid-rsqoyhM5Ed" id="social04-5n">
-	<div class="container">
+	<div class="mine-container">
 		<div class="mbr-row mbr-jc-c">
 			<div class="card mbr-col-sm-12 mbr-col-md-3 mbr-col-lg-2 md-pb">
 				<p class="mbr-text mbr-semibold mbr-fonts-style display-7">
@@ -275,7 +294,7 @@
 <section class="footer4 cid-rsqn8YGLn0" id="footer04-5f">
     
     
-    <div class="container">
+    <div class="mine-container">
 
 
         <div class="mbr-row mbr-jc-c">
@@ -303,7 +322,7 @@
                                 <input type="hidden" name="form[data][0][0]" value="email" id="form[data][0][0]-footer04-5f" data-form-field="">
                                 <input type="email" name="form[data][0][1]" placeholder="La tua Email" data-form-field="email" class="field-input display-7" required="required" value="" id="form[data][0][1]-footer04-5f">
                             </div>
-                            <div class="mbr-col-auto" style=""><button type="submit" class="btn btn-primary display-7" onclick="">Iscrivimi</button></div>
+                            <div class="mbr-col-auto" style=""><button type="submit" class="mine-btn mine-btn-primary display-7" onclick="">Iscrivimi</button></div>
                         </div>
                     </form>
                 </div>
