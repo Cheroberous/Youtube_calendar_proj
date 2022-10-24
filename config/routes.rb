@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get '/cliente' => 'cliente#search'
   get '/cliente/function' => 'cliente#function'
+  get '/cliente/managerprofile' => 'cliente#visualize'
   get '/manager' => 'manager#index'
   # Defines the root path route ("/")
   # root "articles#index"

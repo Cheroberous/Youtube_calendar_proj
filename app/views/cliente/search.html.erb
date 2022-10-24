@@ -87,12 +87,12 @@
             <h2 class="py-3">Lista Manager</h2>
 
             <!--DA IMPLEMENTARE ! -->
-            <a>
+            
             <div class="d-flex flex-column gap-2">
                 <% @users.each do |user| %>
                     <%if user.ruolo=="manager"%>
-
-                    <div class="d-flex flex-row gap-5 align-items-center border managerline p-4">
+                    <a href="/cliente/managerprofile?id=<%= user.id%>" class="text-decoration-none">
+                    <div class="d-flex flex-row gap-5 align-items-center border managerline p-4 text-black">
                         <div>
                             <% if user.avatar.attached?%>
                                 <%= image_tag user.avatar,class:"rounded-circle",height:100,width:100 %>
@@ -111,7 +111,7 @@
 
                         <br>
                     </div>
-                    
+                    </a>
                     
 
                     <%end%>
@@ -119,7 +119,7 @@
                 <% end %>
 
             </div>
-            </a>
+            
         </div>
     </div>
 
