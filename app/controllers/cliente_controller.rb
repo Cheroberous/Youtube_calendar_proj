@@ -11,6 +11,7 @@ class ClienteController < ApplicationController
     end
 
     def visualize
+        @profilatoId= params[:id]
         @profilato = User.find(params[:id])
     end
 

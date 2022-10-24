@@ -1,4 +1,5 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do   
+  resources :reviews
   root 'pages#home'
   
   devise_for :users, controllers: {
@@ -14,8 +15,11 @@ Rails.application.routes.draw do
 
   get '/cliente' => 'cliente#search'
   get '/cliente/function' => 'cliente#function'
-  get '/cliente/managerprofile' => 'cliente#visualize'
+   get '/cliente/managerprofile' => 'cliente#visualize'
+
   get '/manager' => 'manager#index'
+
+  get '/reviews' => 'review#index'
   # Defines the root path route ("/")
   # root "articles#index"
 end
