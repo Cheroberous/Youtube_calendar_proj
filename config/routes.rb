@@ -1,4 +1,5 @@
 Rails.application.routes.draw do   
+  resources :affiliations
   resources :reviews
   root 'pages#home'
   
