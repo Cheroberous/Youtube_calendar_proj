@@ -21,6 +21,13 @@ class AffiliationsController < ApplicationController
   def edit
   end
 
+ # GET /affiliations/accept?id=...
+
+  def accept
+    @affiliazione= Affiliation.find(params[:id])
+    @affiliazione.update_attribute(:status, "accepted")
+  end
+
   # POST /affiliations or /affiliations.json
   def create
     @affiliation = Affiliation.new(affiliation_params)
@@ -56,7 +63,11 @@ class AffiliationsController < ApplicationController
     @affiliation.destroy
 
     respond_to do |format|
-      format.html { redirect_to "/cliente/managerprofile?id="+@manager }
+      if current_user.ruolo=="cliente"
+        format.html { redirect_to "/cliente/managerprofile?id="+@manager }
+      else 
+        format.html { redirect_to "/manager/affiliazioni"}
+      end
       format.json { head :no_content }
     end
   end
@@ -65,6 +76,10 @@ class AffiliationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_affiliation
       @affiliation = Affiliation.find(params[:id])
+      @affiliation.update_attribute(:status, "accepted")
+      respond_to do |format|
+        format.html { redirect_to "/manager/affiliazioni"}
+      end
     end
 
     # Only allow a list of trusted parameters through.

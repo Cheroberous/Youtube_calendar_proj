@@ -6,4 +6,7 @@ class ManagerController < ApplicationController
     def index
     end
 
+    def affiliazioni
+        @affiliazioni=Affiliation.all
+    end
 end
