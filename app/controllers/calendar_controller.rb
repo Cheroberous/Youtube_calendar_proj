@@ -1,7 +1,8 @@
 require "google/apis/calendar_v3"
 require "google/api_client/client_secrets.rb"
+require "json"
 
-# Sistemare refresh_token, non richiede nuovo token
+# Sistemare refresh token, non richiede nuovo token
 
 class CalendarController < ApplicationController
     def new
@@ -9,36 +10,66 @@ class CalendarController < ApplicationController
     end
 
     def create
+        userID = params[:userID]
+
         client = get_google_calendar_client current_user
         calendarList = client.list_calendar_lists()
 
-        calendarList.items.each do |calendar|
-            if calendar.summary === "Youtube Manager Calendar User #{current_user.id}"
-                hash = makeHash(calendar)
+        hash = makeHash(current_user.id, userID)
 
+        calendarList.items.each do |calendar|
+            if calendar.summary === "MMY_USER_#{hash}"
+                # CONTROLLARE SE calendarID sono uguali 
                 if !Calendar.exists?(hash: hash)
-                    calendarToSave = Calendar.new(
-                        calendarId: calendar.id,
-                        summary: calendar.summary,
-                        userId: current_user.id,
-                        hash: hash.to_s
-                    )
+                    calendarToSave = newCalendar(calendar, userID, hash)
+                    # calendarToSave = Calendar.new(
+                    #     calendarId: calendar.id,
+                    #     summary: calendar.summary,
+                    #     managerId: current_user.id,
+                    #     userId: userID,
+                    #     hash: hash.to_s
+                    # )
                     # Sistemare, salva ma da errore
                     calendarToSave.save
                 end
                 
-                calendarID = Calendar.find_by(hash: hash)
-                redirect_to getCalendar_path(:selectedCalendarId => calendarID.id)
+                redirect_to manager_path()
                 return 
             end
         end
 
         googleCalendar = Google::Apis::CalendarV3::Calendar.new(
-            summary: "Youtube Manager Calendar User #{current_user.id}",
+            summary: "MMY_USER_#{hash}",
             time_zone: 'Europe/Rome'
         )
     
-        @createdCalendar = client.insert_calendar(googleCalendar)
+        # Creo calendar con Google API
+        createdCalendar = client.insert_calendar(googleCalendar)
+
+        # Inserisco l'utente nelle ACL del calendario appena creato
+        user = User.find(userID)
+        userEmail = user.email
+
+        # Creo ACL che permette condivisione del calendario appena creato con il relativo cliente.
+        rule = Google::Apis::CalendarV3::AclRule.new(
+            scope: {
+                type: "user",
+                value: userEmail 
+            },
+            # Attraverso tale role, il cliente avra potere di scrittura eventi ma non di modifica del calendario
+            role: "writer"
+        )
+        # Google API Method per inserire le ACL appena create al Google Calendar
+        result = client.insert_acl(createdCalendar.id, rule)
+
+        # Aggiungo il Calendar appena creato al DB Calendars 
+        calendarToSave = newCalendar(createdCalendar, userID, hash)
+        # Da sistemare, salva ma da errore di conversione
+        calendarToSave.save
+    
+        # calendar = Calendar.find_by(hash: hash)
+        # redirect_to getCalendar_path(:selectedCalendarId => calendar.id)
+        redirect_to manager_path()
     end
 
     def list_manager_calendar
@@ -88,8 +119,7 @@ class CalendarController < ApplicationController
             client.authorization.refresh!
             current_user.update_attributes(
               access_token: client.authorization.access_token,
-              refresh_token: client.authorization.refresh_token,
-              expires_at: client.authorization.expires_at.to_i
+              refresh_token: client.authorization.refresh_token
             )
           end
         rescue => e
@@ -99,20 +129,26 @@ class CalendarController < ApplicationController
         client
     end
 
-    def makeHash(calendarToHash)
-        
-        if current_user.ruolo == "manager"
-            managerId = current_user.id
-            clienteId = params[:clientId]
-        else
-
-        end
-
+    def makeHash(managerID, userID)
         hash = Hash[
-            summary: calendarToHash.summary,
-            idUtente: current_user.id
+            managerID: managerID,
+            userID: userID,
+            summary: "MMY_USER_#{userID}"
         ].hash
 
-        return hash
+        return hash.to_s
+    end
+
+    def newCalendar(calendar, userID, hash)
+        calendarToSave = Calendar.new(
+            calendarId: calendar.id,
+            summary: calendar.summary,
+            managerId: current_user.id,
+            userId: userID,
+            hash: hash.to_s
+        )
+
+        return calendarToSave
     end
 end
+    
