@@ -111,8 +111,22 @@
                         </div>
 
                         <div>
-                            <p><%= user.email%></p>
-                        </div>9
+                            <p><%= user.email %></p>
+                        </div>
+
+                        <div>
+                            <ul class="list-group">
+                                <%= link_to calendar_createCalendar_path(userID: user.id) do %>
+                                    <li class="list-group-item">Crea Calendario</li>
+                                <% end %>
+                                <%= link_to calendar_editCalendar_path(userID: user.id) do %>
+                                    <li class="list-group-item">Modifica Calendario</li>
+                                <% end %>
+                                <%= link_to calendar_deleteCalendar_path(userID: user.id) do %>
+                                    <li class="list-group-item">Elimina Calendario</li>
+                                <% end %>
+                            </ul>
+                        </div>
 
                         <br>
                     </div>

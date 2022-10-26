@@ -26,4 +26,8 @@ Rails.application.routes.draw do
   get '/reviews' => 'review#index'
   # Defines the root path route ("/")
   # root "articles#index"
+  get "calendar/createCalendar" , to: "calendar#create"
+  get "calendar/editCalendar" , to: "calendar#edit"
+  get "calendar/deleteCalendar" , to: "calendar#delete"
+
 end
