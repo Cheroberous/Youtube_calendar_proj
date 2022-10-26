@@ -67,9 +67,6 @@
 
 		</div>
 	</nav>
-
-	
-	<!-- </div> -->
 </section>
 
 <section class="header3 cid-rsq6I1iuyl">
@@ -82,7 +79,7 @@
       end    
     %>
 
-    <div class="container d-flex flex-row" style="height:270px">
+    <div class="container d-flex flex-row" style="min-height:340px">
         <div class="d-flex flex-column col-12">
             <h2 class="py-3">Lista Clienti</h2>
 
@@ -94,43 +91,39 @@
                     <%if user.ruolo=="cliente" && @affiliazione%>
                     
                     <!--Implementare qui link per singolo cliente-->
-                    <a href="" class="text-decoration-none">
+                        <div class="d-flex flex-row gap-5 align-items-center border managerline p-4 px-5 text-black">
+                            <div>
+                                <% if user.avatar.attached?%>
+                                    <%= image_tag user.avatar,class:"rounded-circle",height:100,width:100 %>
+                                <% else %>
+                                    <img src="<%=withoutLast5(user.avatar_url)%>" alt="avatar" class="rounded-circle" style="width: 100px;">
+                                <%end%>
+                            </div>
+                                
+                            <div>
+                                <p class="font-weight-bold" style="font-weight: bold"><%= user.full_name %></p>
+                            </div>
 
+                            <div>
+                                <p><%= user.email %></p>
+                            </div>
 
-                    <div class="d-flex flex-row gap-5 align-items-center border managerline p-4 text-black">
-                        <div>
-                            <% if user.avatar.attached?%>
-                                <%= image_tag user.avatar,class:"rounded-circle",height:100,width:100 %>
-                            <% else %>
-                                <img src="<%=withoutLast5(user.avatar_url)%>" alt="avatar" class="rounded-circle" style="width: 100px;">
-                            <%end%>
+                            <div class="d-flex flex-column" style="margin-left:auto">
+                                <ul class="list-group">
+                                    <%= link_to calendar_createCalendar_path(userID: user.id) do %>
+                                        <li class="btn btn-success mt-1" style="width:100%">Crea Calendario</li>
+                                    <% end %>
+                                    <%= link_to calendar_editCalendar_path(userID: user.id) do %>
+                                        <li class="btn btn-warning mt-1" style="width:100%">Modifica Calendario</li>
+                                    <% end %>
+                                    <%= link_to calendar_deleteCalendar_path(userID: user.id) do %>
+                                        <li class="btn btn-danger mt-1" style="width:100%">Elimina Calendario</li>
+                                    <% end %>
+                                </ul>
+                            </div>
+
+                            <br>
                         </div>
-                            
-                        <div>
-                            <p class="font-weight-bold" style="font-weight: bold"><%= user.full_name %></p>
-                        </div>
-
-                        <div>
-                            <p><%= user.email %></p>
-                        </div>
-
-                        <div>
-                            <ul class="list-group">
-                                <%= link_to calendar_createCalendar_path(userID: user.id) do %>
-                                    <li class="list-group-item">Crea Calendario</li>
-                                <% end %>
-                                <%= link_to calendar_editCalendar_path(userID: user.id) do %>
-                                    <li class="list-group-item">Modifica Calendario</li>
-                                <% end %>
-                                <%= link_to calendar_deleteCalendar_path(userID: user.id) do %>
-                                    <li class="list-group-item">Elimina Calendario</li>
-                                <% end %>
-                            </ul>
-                        </div>
-
-                        <br>
-                    </div>
-                    </a>
                     
 
                     <%end%>
