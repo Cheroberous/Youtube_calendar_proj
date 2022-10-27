@@ -108,6 +108,7 @@
                                 <p><%= user.email %></p>
                             </div>
 
+                            <a href="/manager/aziende?id=<%=user.id%>" class="btn btn-outline-danger" style="margin-left:auto">Affilia ad un'azienda</a>
                             <div class="d-flex flex-column" style="margin-left:auto">
                                 <ul class="list-group">
                                     <%= link_to calendar_createCalendar_path(userID: user.id) do %>
