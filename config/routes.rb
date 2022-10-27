@@ -27,7 +27,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   get "calendar/createCalendar" , to: "calendar#create"
-  get "calendar/editCalendar" , to: "calendar#edit"
+  get "calendar/updateCalendar" , to: "calendar#update"
   get "calendar/deleteCalendar" , to: "calendar#delete"
+
+  get "calendar/createEvent" , to: "calendar#createEvent"
+  get "calendar/editEvent" , to: "calendar#createEvent"
+  get "calendar/deleteEvent" , to: "calendar#deleteEvent"
 
 end

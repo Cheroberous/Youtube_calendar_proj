@@ -1,15 +1,17 @@
 require "google/apis/calendar_v3"
 require "google/api_client/client_secrets.rb"
-require "json"
+require 'open-uri'
 
 # Sistemare refresh token, non richiede nuovo token
 
 class CalendarController < ApplicationController
+
     def new
         @calendar = Calendar.new
     end
 
     def create
+        # Da testare
         userID = params[:userID]
 
         client = get_google_calendar_client current_user
@@ -29,7 +31,7 @@ class CalendarController < ApplicationController
                     calendarToSave = newCalendar(calendar, userID, hash, acl.id)
     
                     # Sistemare, salva ma da errore
-                    calendarToSave.save
+                    calendarToSave.save!
                 end
                 
                 redirect_to manager_path()
@@ -64,42 +66,27 @@ class CalendarController < ApplicationController
         # Aggiungo il Calendar appena creato al DB Calendars 
         calendarToSave = newCalendar(createdCalendar, userID, hash, result.id)
         # Da sistemare, salva ma da errore di conversione
-        calendarToSave.save
+        calendarToSave.save!
     
         # calendar = Calendar.find_by(hash: hash)
-        # redirect_to getCalendar_path(:selectedCalendarId => calendar.id)
-        redirect_to manager_path()
+        # redirect_to getCalendar_path(:ttedCalendarId => calendar.id)
+        # redirect_to manager_path()
 
     rescue Google::Apis::AuthorizationError
-        rescueUnauthorized(client)
-    end
+        secrets = Google::APIClient::ClientSecrets.new({
+            "web" => {
+              "access_token" => current_user.access_token,
+              "refresh_token" => current_user.refresh_token,
+              "client_id" => ENV["GOOGLE_OAUTH_CLIENT_ID"],
+              "client_secret" => ENV["GOOGLE_OAUTH_CLIENT_SECRET"]
+            }
+        })
+        client.authorization = secrets.to_authorization
+        client.authorization.grant_type = "refresh_token"
 
-    def list_manager_calendar
-        client = get_google_calendar_client current_user
-        calendarList = client.list_calendar_lists()
-
-        calendarList.items.each do |calendar|
-            # Creo Hash del calendario per controllare che questo sia gia presente nel Database
-            hash = makeHash(calendar)
-
-            if !Calendar.exists?(hash: hash)
-                calendarToSave = Calendar.new(
-                    calendarId: calendar.id,
-                    summary: calendar.summary,
-                    userId: current_user.id.to_s,
-                    hash: hash
-                )
-                # Sistemare, non salva
-                calendarToSave.save
-            end
-        end
-
-        @calendarList = Calendar.where(userId: current_user.id)
-    end
-
-    def getCalendar
-        selectedCalendar = params[:selectedCalendarId]
-        @calendar = Calendar.find(selectedCalendar)
+        client.authorization.refresh!
+        current_user.update_attribute(:access_token, client.authorization.access_token)
+        current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
     end
 
     def delete
@@ -118,6 +105,12 @@ class CalendarController < ApplicationController
 
     rescue Google::Apis::AuthorizationError
         rescueUnauthorized(client)
+    end
+
+    def createCalendar
+    end
+
+    def deleteCalendar
     end
 
     def get_google_calendar_client current_user
@@ -161,17 +154,18 @@ class CalendarController < ApplicationController
 
     def newCalendar(calendar, userID, hash, acl_id)
         calendarToSave = Calendar.new(
-            calendarId: calendar.id,
-            summary: calendar.summary,
-            managerId: current_user.id,
-            userId: userID,
+            calendarId: calendar.id.to_s,
+            summary: calendar.summary.to_s,
+            managerId: current_user.id.to_s,
+            userId: userID.to_s,
             hash: hash.to_s,
-            acl_id: acl_id
+            acl_id: acl_id.to_s
         )
 
         return calendarToSave
     end
 
+    # Non funziona
     def rescueUnauthorized(client)
         secrets = Google::APIClient::ClientSecrets.new({
             "web" => {
