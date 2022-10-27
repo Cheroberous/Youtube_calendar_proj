@@ -90,8 +90,37 @@
             
             <div class="d-flex flex-column gap-2">
                 <% @affiliazioni.each do |affiliazione| %>
-                    <%if affiliazione.manager.to_i==current_user.id && affiliazione.status!="accepted"%> 
+                    <%if affiliazione.manager.to_i==current_user.id && affiliazione.status!="accepted" && affiliazione.azienda==""%> 
                         <% @cliente= User.find(affiliazione.cliente)%>                    
+                        <div class="d-flex flex-row gap-5 align-items-center border p-4 text-black">
+
+                        <div>
+                            <% if @cliente.avatar.attached?%>
+                                <%= image_tag @cliente.avatar,class:"rounded-circle",height:100,width:100 %>
+                            <% else %>
+                                <img src="<%=withoutLast5(@cliente.avatar_url)%>" alt="avatar" class="rounded-circle" style="width: 100px;">
+                            <%end%>
+                        </div>
+                            
+                        <div>
+                            <p class="font-weight-bold" style="font-weight: bold"><%= @cliente.full_name %></p>
+                        </div>
+
+                        <div>
+                            <p><%= @cliente.email%></p>
+                        </div>
+
+                        <div class="accept-btns d-flex fleex-row gap-3" style="margin-left:auto">
+                            <a href="/affiliations/<%= affiliazione.id%>"><button type="button" class="btn btn-success">Accetta</button></a>
+                            <%= button_to "Rifiuta", affiliazione, method: :delete, class:"btn btn-danger" %>
+                        </div>
+
+                        <br>
+                    </div>
+                    <%end%>
+                    <%if affiliazione.azienda.to_i==current_user.id && affiliazione.status!="accepted"%> 
+                        <% @cliente= User.find(affiliazione.cliente)%>
+                        <% @manager= User.find(affiliazione.manager)%>                    
                         <div class="d-flex flex-row gap-5 align-items-center border p-4 text-black">
 
                         <div>

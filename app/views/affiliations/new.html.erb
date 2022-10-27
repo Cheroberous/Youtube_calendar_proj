@@ -69,19 +69,45 @@
 	<!-- </div> -->
 </section>
 
+<%def withoutLast5(userAvatarUrl)
+  if userAvatarUrl
+    return userAvatarUrl[0..-6]+"s580-c"
+  else 
+    return "https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg"
+  end
+end%>
+
 <div class="container pt-5 ">
   <div class="d-flex flex-column align-items-center justify-content-center">
     <div class="card mb-4 col-12">
+
+      <%if @azienda%>
+        <div class="card-body text-center">
+          <% if !User.find(@azienda.to_i).avatar.attached?%>
+            <img src="<%=withoutLast5(User.find(@azienda.to_i).avatar_url)%>" alt="avatar"
+            class="rounded-circle" style="width: 150px;">
+          <% else %>
+            <%= image_tag User.find(@azienda.to_i).avatar,class:"rounded-circle",height:150,width:150 %>
+          <%end%>
+          <h5 class="my-3 text-capitalize"><%= User.find(@azienda.to_i).full_name %></h5>
+          <p class="text-muted text-capitalize"><%= User.find(@azienda.to_i).ruolo %></p>
+        </div>
+
+      <%else%>
       <div class="card-body text-center">
+
         <% if !User.find(@manager.to_i).avatar.attached?%>
           <img src="<%=withoutLast5(User.find(@manager.to_i).avatar_url)%>" alt="avatar"
           class="rounded-circle" style="width: 150px;">
         <% else %>
           <%= image_tag User.find(@manager.to_i).avatar,class:"rounded-circle",height:150,width:150 %>
         <%end%>
+        
         <h5 class="my-3 text-capitalize"><%= User.find(@manager.to_i).full_name %></h5>
         <p class="text-muted text-capitalize"><%= User.find(@manager.to_i).ruolo %></p>
       </div>
+      <%end%>
+
     </div>
     <div>
       <%= render "form", affiliation: @affiliation %>

@@ -13,8 +13,18 @@ class AffiliationsController < ApplicationController
   # GET /affiliations/new
   def new
     @affiliation = Affiliation.new
-    @cliente= current_user.id
-    @manager= params[:manager]
+
+    @azienda=params[:azienda]
+    
+    if current_user.ruolo=="cliente"
+      @cliente= current_user.id
+      @manager= params[:manager]
+    else 
+      @cliente= params[:cliente]
+      @manager= current_user.id
+    end
+
+
   end
 
   # GET /affiliations/1/edit
@@ -33,10 +43,17 @@ class AffiliationsController < ApplicationController
     @affiliation = Affiliation.new(affiliation_params)
     @cliente= affiliation_params[:cliente]
     @manager= affiliation_params[:manager]
+    @azienda= affiliation_params[:azienda]
     respond_to do |format|
       if @affiliation.save
-        format.html { redirect_to "/cliente/managerprofile?id="+@manager}
-        format.json { render :show, status: :created, location: @affiliation }
+        if current_user.ruolo=="cliente"
+          format.html { redirect_to "/cliente/managerprofile?id="+@manager}
+          format.json { render :show, status: :created, location: @affiliation }
+        end
+        if current_user.ruolo=="manager"
+          format.html { redirect_to "/manager"}
+          format.json { render :show, status: :created, location: @affiliation }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @affiliation.errors, status: :unprocessable_entity }
@@ -78,12 +95,17 @@ class AffiliationsController < ApplicationController
       @affiliation = Affiliation.find(params[:id])
       @affiliation.update_attribute(:status, "accepted")
       respond_to do |format|
-        format.html { redirect_to "/manager/affiliazioni"}
+        if current_user.ruolo=="manager"
+          format.html { redirect_to "/manager/affiliazioni"}
+        end
+        if current_user.ruolo=="azienda"
+          format.html { redirect_to "/azienda/affiliazioni"}
+        end
       end
     end
 
     # Only allow a list of trusted parameters through.
     def affiliation_params
-      params.require(:affiliation).permit(:cliente, :manager, :status)
+      params.require(:affiliation).permit(:cliente, :manager, :azienda, :status)
     end
 end
