@@ -19,6 +19,7 @@ input{font:inherit}*{box-sizing:border-box;outline:none}*:focus{outline:none}bod
 font-style:normal;
 line-height:1.5;color:#24262b;font-weight:300}
 
+
 section{
 background-color:#ffffff;
 background-position:50% 50%;background-repeat:no-repeat;background-size:cover;
@@ -356,3 +357,11 @@ a[class*="text-"], .amp-iconfont, .mbr-iconfont{
     background-color: #e6e6e6;
 }
 
+.btnevent:hover {
+    -webkit-filter: brightness(85%);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
