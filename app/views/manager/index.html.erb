@@ -114,11 +114,21 @@
                                     <%= link_to calendar_createCalendar_path(userID: user.id) do %>
                                         <li class="btn btn-success mt-1" style="width:100%">Crea Calendario</li>
                                     <% end %>
-                                    <%= link_to calendar_editCalendar_path(userID: user.id) do %>
-                                        <li class="btn btn-warning mt-1" style="width:100%">Modifica Calendario</li>
+                                    <%= link_to 'http://calendar.google.com/', target: :_blank do %>
+                                        <li class="btn btn-warning mt-1" style="width:100%">Visualizza Calendario</li>
                                     <% end %>
                                     <%= link_to calendar_deleteCalendar_path(userID: user.id) do %>
                                         <li class="btn btn-danger mt-1" style="width:100%">Elimina Calendario</li>
+                                    <% end %>
+                                    <br>
+                                    <%= link_to calendar_createEvent_path(userID: user.id) do %>
+                                        <li class="btn btn-danger mt-1" style="width:100%">Crea Evento</li>
+                                    <% end %>
+                                    <%= link_to calendar_editEvent_path(userID: user.id) do %>
+                                        <li class="btn btn-danger mt-1" style="width:100%">Modifica Evento</li>
+                                    <% end %>
+                                    <%= link_to calendar_deleteEvent_path(userID: user.id) do %>
+                                        <li class="btn btn-danger mt-1" style="width:100%">Elimina Evento</li>
                                     <% end %>
                                 </ul>
                             </div>
