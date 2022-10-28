@@ -142,7 +142,7 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.1)
     ffi (1.15.5)
-    ffi (1.15.5-x64-mingw-ucrt)
+    ffi (1.15.5-x64-unknown)
     gems (1.2.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -386,4 +386,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.3.24
+   2.3.10

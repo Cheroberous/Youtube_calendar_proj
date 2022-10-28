@@ -1,0 +1,6 @@
+<%= form_with model: @event, url: "createEventConfirm", method: :get do |form| %>
+    <%= form.label :summary, "Summary:" %>
+    <%= form.text_field :summary %>
+
+    <%= form.submit "Invia" %>
+<% end %>
