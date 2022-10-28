@@ -18,4 +18,11 @@ class ManagerController < ApplicationController
         @manager= current_user.id
     end
 
+    def singleone
+        @cliente= User.find(params[:cliente])
+        if !Affiliation.where(manager: current_user.id).where(cliente: @cliente.id).where(status: 'accepted').take
+            redirect_to ''
+        end
+    end
+
 end

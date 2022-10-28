@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get '/manager' => 'manager#index'
   get '/manager/affiliazioni' => 'manager#affiliazioni'
   get '/manager/aziende' => 'manager#aziende'
+  get '/manager/singleone' => 'manager#singleone'
 
   get '/azienda' => 'azienda#index'
   get '/azienda/affiliazioni' => 'azienda#affiliazioni'
