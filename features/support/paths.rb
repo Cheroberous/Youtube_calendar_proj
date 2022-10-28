@@ -16,6 +16,27 @@ module NavigationHelpers
     when /^the home\s?page$/
       '/'
 
+    when /^the Managemyoutube home page/
+      '/'
+
+    when /^the Managemyoutube sign up/
+      '/users/sign_up'
+
+
+    when /^the Managemyoutube log in/
+      '/users/sign_in'
+
+
+    when /^cliente_s_m/
+      '/cliente'
+
+    
+    when /^un_manager/
+      '/cliente/managerprofile?id=1'
+
+    when /^nuova_affilia/
+      '/affiliations/new?manager=2'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
