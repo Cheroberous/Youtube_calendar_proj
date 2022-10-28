@@ -91,7 +91,7 @@
                     <%if user.ruolo=="cliente" && @affiliazione%>
                     
                     <!--Implementare qui link per singolo cliente-->
-                        <div class="d-flex flex-row gap-5 align-items-center border p-4 px-5 text-black">
+                        <div onclick="location.href='/manager/singleone?cliente=<%=user.id%>'" style="cursor:pointer" class="d-flex flex-row gap-5 align-items-center managerline border p-4 px-5 text-black">
                             <div>
                                 <% if user.avatar.attached?%>
                                     <%= image_tag user.avatar,class:"rounded-circle",height:100,width:100 %>
@@ -108,44 +108,9 @@
                                 <p><%= user.email %></p>
                             </div>
 
-                            <a href="/manager/aziende?id=<%=user.id%>" class="btn btn-outline-danger" style="margin-left:auto">Affilia ad un'azienda</a>
-                            <div class="d-flex flex-column" style="margin-left:auto">
-                                <ul class="list-group">
-
-                                    <%if !Calendar.where(userId: user.id.to_s).where(managerId: current_user.id.to_s).take%>
-                                        <%= link_to calendar_createCalendar_path(userID: user.id) do %>
-                                            <li class="btn btn-success mt-1" style="width:100%">Crea Calendario</li>
-                                        <% end %>
-                                    <%else%>
-                                    <div class="d-flex flex-row gap-3 align-items-center">
-                                        <div>
-                                            <%= link_to 'http://calendar.google.com/', target: :_blank do %>
-                                                <li class="btn btn-warning mt-1" style="width:100%">Visualizza Calendario</li>
-                                            <% end %>
-                                            <%= link_to calendar_deleteCalendar_path(userID: user.id) do %>
-                                                <li class="btn btn-danger mt-1" style="width:100%">Elimina Calendario</li>
-                                            <% end %>
-                                        </div>
-                                        <div class="">
-                                            <br>
-                                            <%= link_to calendar_createEvent_path(userID: user.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%; background-color: rgb(169, 249, 255);">Crea Evento</li>
-                                            <% end %>
-                                            <%= link_to calendar_editEvent_path(userID: user.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%;  background-color: rgb(98, 245, 255)";>Modifica Evento</li>
-                                            <% end %>
-                                            <%= link_to calendar_deleteEvent_path(userID: user.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%; background-color:rgb(4, 238, 255);">Elimina Evento</li>
-                                            <% end %>
-                                        </div>
-                                    </div>
-                                    <%end%>
-                                </ul>
-                            </div>
 
                             <br>
                         </div>
-                    
 
                     <%end%>
 
