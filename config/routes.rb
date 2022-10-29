@@ -48,4 +48,6 @@ Rails.application.routes.draw do
   get "/event", to: "calendar#editEvent"
   patch "/event", to: "calendar#reviewEvent"
 
+  get "/YTProva", to: "youtube#youtubeListProva"
+
 end

@@ -1,4 +1,5 @@
 require "google/apis/calendar_v3"
+require "google/apis/youtube_v3"
 
 require "google/api_client/client_secrets.rb"
 require 'open-uri'
@@ -157,23 +158,23 @@ class CalendarController < ApplicationController
 
         cliente = User.find_by(id: userID)
 
-        manager = Google::Apis::CalendarV3::EventAttendee.new(
-            display_name: current_user.full_name,
-            email: current_user.email,
-            id: current_user.id, 
-            organizer: true
-        )
+        # manager = Google::Apis::CalendarV3::EventAttendee.new(
+        #     display_name: current_user.full_name,
+        #     email: current_user.email,
+        #     id: current_user.id, 
+        #     organizer: true
+        # )
 
         clienteAttendee =  Google::Apis::CalendarV3::EventAttendee.new(
             display_name: cliente.full_name,
             email: cliente.email,
             id: cliente.id, 
-            organizer: true
+            resource: true
         )
 
         calendarEvent = Google::Apis::CalendarV3::Event.new(
             summary: event[:summary],
-            attendees: [manager, clienteAttendee],
+            attendees: [clienteAttendee],
             creator: Google::Apis::CalendarV3::Event::Creator.new(
                 display_name: current_user.full_name,
                 email: current_user.email,
@@ -265,14 +266,17 @@ class CalendarController < ApplicationController
         eventToEdit.conference_data.conference_id = event[:meetCode]
 
         @editedEvent = client.patch_event(@event.calendarID, @event.eventID, eventToEdit)
-        # redirect_to manager_path()
+        redirect_to manager_path()
     end
 
     def deleteEvent
-        client = get_google_calendar_client current_user
-        calendar = Calendar.find_by(managerId: "7", userId: "8")
+        eventToDelete = Event.find(params[:event])
 
-        client.delete_event(calendar.calendarId, "nua6bnrr13jg6f2btun9hs37a4")
+        client = get_google_calendar_client current_user
+
+        if client.delete_event(eventToDelete.calendarID, eventToDelete.eventID)
+            Event.delete(eventToDelete.id)
+        end
 
         redirect_to manager_path()
     end

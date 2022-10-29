@@ -114,23 +114,21 @@
                         </div>
 
                         <div class="my-0">
-                            <p><%= event.start%></p>
+                            <p><%= event.start %></p>
                         </div>
 
                         <div class="my-0">
-                            <p><%= event.end%></p>
+                            <p><%= event.end %></p>
                         </div>
                         
                         <div>
-                            <%= link_to calendar_listEvent_path(userID: @cliente.id) do %>
+                            <%= link_to event do %>
                                 <li class="btn btnevent mt-1" style="width:100%;  background-color: rgb(98, 245, 255)";>Modifica Evento</li>
                             <% end %>
-                            <%= link_to calendar_deleteEvent_path(userID: @cliente.id) do %>
+                            <%= link_to calendar_deleteEvent_path(event: event) do %>
                                 <li class="btn btnevent btn-danger mt-1" style="width:100%;">Elimina Evento</li>
                             <% end %>
                         </div>
-
-
                     </div>
                 <%end%>
             <%end%>
