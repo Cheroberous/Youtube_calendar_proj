@@ -19,8 +19,10 @@ class AffiliationsController < ApplicationController
     if current_user.ruolo=="cliente"
       @cliente= current_user.id
       @manager= params[:manager]
+      is_it_a_manager(User.find(@manager))
     else 
       @cliente= params[:cliente]
+      is_it_a_cliente(User.find(@cliente))
       @manager= current_user.id
     end
 
@@ -44,6 +46,14 @@ class AffiliationsController < ApplicationController
     @cliente= affiliation_params[:cliente]
     @manager= affiliation_params[:manager]
     @azienda= affiliation_params[:azienda]
+
+    #Controlla se l'utente è già affiliato con un manager
+    affiliation_check= Affiliation.where(cliente: @cliente).take
+    if !@azienda && affiliation_check
+      redirect_to ''
+      return
+    end
+
     respond_to do |format|
       if @affiliation.save
         if current_user.ruolo=="cliente"
