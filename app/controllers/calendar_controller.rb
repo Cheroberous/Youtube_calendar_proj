@@ -215,9 +215,13 @@ class CalendarController < ApplicationController
         @eventRecord.meetCode = @createdEvent.conference_data.conference_id
         @eventRecord.calendarID = calendar.calendarId
         @eventRecord.eventID = @createdEvent.id
+        @eventRecord.managerID= current_user.id
+        @eventRecord.clienteID= cliente.id
 
         @eventRecord.save
         
+        redirect_to '/manager/singleone?cliente='+ cliente.id.to_s
+
     rescue Google::Apis::AuthorizationError
         secrets = Google::APIClient::ClientSecrets.new({
             "web" => {

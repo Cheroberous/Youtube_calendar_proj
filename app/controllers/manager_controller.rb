@@ -25,4 +25,11 @@ class ManagerController < ApplicationController
         end
     end
 
+    def events
+        @cliente= User.find(params[:cliente])
+        @events=Event.all
+        if !Affiliation.where(manager: current_user.id).where(cliente: @cliente.id).where(status: 'accepted').take
+            redirect_to ''
+        end
+    end
 end

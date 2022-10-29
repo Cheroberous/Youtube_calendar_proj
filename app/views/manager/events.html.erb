@@ -73,7 +73,7 @@
     </section>
 
   <section style="background-color: white;">
-    <div class="container py-5">
+    <div class="d-flex flex-column align-items-center py-5">
       <%def withoutLast5(user)
           if @cliente.avatar_url
             return @cliente.avatar_url[0..-6]+"s580-c"
@@ -83,9 +83,8 @@
         end    
       %>
 
-      <div class="row">
-
-        <div class="col-lg-4">
+        <!--Avatar Cliente-->
+        <div class="col-lg-3">
           <div class="card mb-4">
             <div class="card-body text-center">
                 <% if !@cliente.avatar.attached?%>
@@ -98,96 +97,45 @@
                 <p class="text-muted mb-1 text-capitalize"><%= @cliente.ruolo %></p>
 
                 <% @affiliazione=Affiliation.where(cliente: @cliente.id.to_s).where(manager: current_user.id.to_s).where(status: "accepted").take%>
-                <a href="/manager/aziende?id=<%=@cliente.id%>" class="btn btn-outline-danger mt-2" style="margin-left:auto">Affilia ad un'azienda</a>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-8">
+        <!--Eventi-->
 
-            <div class="card mb-4">
-            <div class="card-body">
+        <div class="d-flex flex-column gap-2 align-items-center col-lg-8">
+            <h2 class="pb-3">Eventi</h2>
+            <% @events.each do |event| %>
+                <%if event.clienteID.to_i==@cliente.id.to_i && event.managerID.to_i==current_user.id.to_i%>
+                    <div class="d-flex flex-row gap-5 justify-content-evenly align-items-center border p-4 text-black col-lg-8" style="min-width:90%">
+                            
+                        <div class="my-0">
+                            <p class="font-weight-bold" style="font-weight: bold"><%= event.summary %></p>
+                        </div>
 
-                <div class="row">
-                <div class="col-sm-3">
-                    <p class="mb-0">Nome</p>
-                </div>
-                <div class="col-sm-9">
-                    <p class="text-muted mb-0 text-capitalize"><%= @cliente.full_name %></p>
-                </div>
-                </div>
+                        <div class="my-0">
+                            <p><%= event.start%></p>
+                        </div>
 
-                <hr>
+                        <div class="my-0">
+                            <p><%= event.end%></p>
+                        </div>
+                        
+                        <div>
+                            <%= link_to calendar_listEvent_path(userID: @cliente.id) do %>
+                                <li class="btn btnevent mt-1" style="width:100%;  background-color: rgb(98, 245, 255)";>Modifica Evento</li>
+                            <% end %>
+                            <%= link_to calendar_deleteEvent_path(userID: @cliente.id) do %>
+                                <li class="btn btnevent btn-danger mt-1" style="width:100%;">Elimina Evento</li>
+                            <% end %>
+                        </div>
 
-                <div class="row">
-                <div class="col-sm-3">
-                    <p class="mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                    <p class="text-muted mb-0"><%= @cliente.email %></p>
-                </div>
-                </div>
 
-            </div>
-            </div>
-
-            <!--Youtube e Calendar Functions-->
-            <div class="d-flex flex-row mb-4">
-            
-            <div class="d-flex justify-content-center col-6" style="border-right: 1px solid grey;">
-                <h4>Funzioni Youtube</h4>
-                <div class="d-flex flex-column">
-                    <hr>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column align-items-center col-6">
-                <h4>Funzioni Calendar</h4>
-                
-                <div class="d-flex flex-column">
-                                <hr>
-                                <ul class="list-group">
-
-                                    <%if !Calendar.where(userId: @cliente.id.to_s).where(managerId: current_user.id.to_s).take%>
-                                        <%= link_to calendar_createCalendar_path(userID: @cliente.id.to_i) do %>
-                                            <li class="btn btn-success mt-1" style="width:100%">Crea Calendario</li>
-                                        <% end %>
-                                    <%else%>
-                                    <div class="d-flex flex-row gap-3 align-items-center">
-                                        <div>
-                                            <%= link_to 'http://calendar.google.com/', target: :_blank do %>
-                                                <li class="btn btn-warning mt-1" style="width:100%">Visualizza Calendario</li>
-                                            <% end %>
-                                            <%= link_to calendar_deleteCalendar_path(userID: @cliente.id) do %>
-                                                <li class="btn btn-danger mt-1" style="width:100%">Elimina Calendario</li>
-                                            <% end %>
-                                            <br>
-                                            <hr>
-                                            
-                                            <%= link_to calendar_createEvent_path(userID: @cliente.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%; background-color: rgb(169, 249, 255);">Crea Evento</li>
-                                            <% end %>
-                                                <a href="/manager/events?cliente=<%=@cliente.id.to_s%>" class="btn btnevent mt-1" style="width:100%;  background-color: rgb(98, 245, 255)">Visualizza Eventi</a>
-                                            <!--
-                                            <%= link_to calendar_listEvent_path(userID: @cliente.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%;  background-color: rgb(98, 245, 255)";>Modifica Evento</li>
-                                            <% end %>
-                                            <%= link_to calendar_deleteEvent_path(userID: @cliente.id) do %>
-                                                <li class="btn btnevent mt-1" style="width:100%; background-color:rgb(4, 238, 255);">Elimina Evento</li>
-                                            <% end %>
-                                            -->
-                                        </div>
-                                    </div>
-                                    <%end%>
-                                </ul>
-                            </div>
-            </div>
-
-            </div>
-
+                    </div>
+                <%end%>
+            <%end%>
         </div>
 
-      </div>
     </div>
   </section>
 

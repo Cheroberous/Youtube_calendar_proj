@@ -354,6 +354,7 @@ GEM
 
 PLATFORMS
   x64-unknown
+  x64-unknown
   x86_64-linux
 
 DEPENDENCIES
@@ -386,4 +387,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.3.10
+   2.3.24
