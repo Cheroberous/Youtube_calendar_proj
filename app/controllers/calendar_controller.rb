@@ -4,6 +4,8 @@ require "google/api_client/client_secrets.rb"
 require 'open-uri'
 require 'date'
 
+require 'json'
+
 # Sistemare refresh token, non richiede nuovo token
 
 class CalendarController < ApplicationController
@@ -23,6 +25,7 @@ class CalendarController < ApplicationController
         hash = makeHash(current_user.id, userID)
 
         calendarList.items.each do |calendar|
+            # Da Cambiare e ricercare per userID e managerID
             if calendar.summary === "MMY_USER_#{hash}"
                 # CONTROLLARE SE calendarID sono uguali
 
@@ -90,6 +93,7 @@ class CalendarController < ApplicationController
         client.authorization.refresh!
         current_user.update_attribute(:access_token, client.authorization.access_token)
         current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
+        retry
     end
 
     def delete
@@ -107,66 +111,107 @@ class CalendarController < ApplicationController
         redirect_to manager_path()
 
     rescue Google::Apis::AuthorizationError
-        rescueUnauthorized(client)
+        secrets = Google::APIClient::ClientSecrets.new({
+            "web" => {
+              "access_token" => current_user.access_token,
+              "refresh_token" => current_user.refresh_token,
+              "client_id" => ENV["GOOGLE_OAUTH_CLIENT_ID"],
+              "client_secret" => ENV["GOOGLE_OAUTH_CLIENT_SECRET"]
+            }
+        })
+        client.authorization = secrets.to_authorization
+        client.authorization.grant_type = "refresh_token"
+
+        client.authorization.refresh!
+        current_user.update_attribute(:access_token, client.authorization.access_token)
+        current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
+        retry
     end
 
     def createEvent
-        # client = get_google_calendar_client current_user
-
-        # calendar = Calendar.find_by(managerId: current_user.id, userId: userID)
-
         @event = Event.new
-        # Dopo aver fatto, provare con supports_attachments: True
-        # client.insert_event(calendar.calendarId, event)
+        @userID = params[:userID]
     end
 
+    # OK, Sistemare form e dati relativi
     def createEventConfirm
         event = params[:event]
-
+        userID = event[:userID]
         # Da sistemare con tutti i dati
         # @newEvent = Event.new()
         # @newEvent.summary = event[:summary]
         # @newEvent.save
 
-        calendarEvent = Google::Apis::CalendarV3::Event.new(
-            summary: event[:summary],
-            creator: DateTime.now,
-            creator: Google::Apis::CalendarV3::Event::Creator.new(
-                display_name: current_user.full_name,
-                email: current_user.email,
-                id: current_user.id
-            ),
-            description: "Prova Evento",
-            start: Google::Apis::CalendarV3::EventDateTime.new(
-                # date: Date.today,
-                date_time: DateTime.new(2022,10,29,6,0,0), 
-                time_zone: "Europe/Rome"
-            ), 
-            end: Google::Apis::CalendarV3::EventDateTime.new(
-                # date: Date.today,
-                date_time: DateTime.new(2022,10,29,7,0,0), 
-                time_zone: "Europe/Rome"
-            ),
-            # id: @newEvent.id,
-            kind: "calendar#event",
-            organizer: Google::Apis::CalendarV3::Event::Organizer.new(
-                display_name: current_user.full_name,
-                email: current_user.email,
-                id: current_user.id
-            ),
-            source: Google::Apis::CalendarV3::Event::Source.new(
-                title: "Create Event Method from Calendar Controller",
-                url: "http://127.0.0.1/calendar/createCalendar"
-            )
+        # if event[:meetConference] == 1
+            
+        # else
+        #     conferenceData = nil
+        # end 
+
+        @conferenceData = Google::Apis::CalendarV3::ConferenceData.new(
+            create_request: Google::Apis::CalendarV3::CreateConferenceRequest.new(
+                conference_solution_key: Google::Apis::CalendarV3::ConferenceSolutionKey.new(
+                    type: "hangoutsMeet"
+                )
+            )<.........
+            
+            
+            
+            
+            
+            +-
         )
 
-        calendar = Calendar.find_by(managerId: "7", userId: "8")
+        # cliente = User.find_by(id: userID)
 
-        client = get_google_calendar_client current_user
-        @createdEvent = client.insert_event(calendar.calendarId, calendarEvent)
+        # manager = Google::Apis::CalendarV3::EventAttendee.new(
+        #     display_name: current_user.full_name,
+        #     email: current_user.email,
+        #     id: current_user.id, 
+        #     organizer: true
+        # )
 
-        # @date = Date.today
-        # @dateTime = DateTime.now
+        # clienteAttendee =  Google::Apis::CalendarV3::EventAttendee.new(
+        #     display_name: cliente.full_name,
+        #     email: cliente.email,
+        #     id: cliente.id, 
+        #     organizer: true
+        # )
+
+        # calendarEvent = Google::Apis::CalendarV3::Event.new(
+        #     summary: event[:summary],
+        #     attendees: [manager, clienteAttendee],
+        #     creator: Google::Apis::CalendarV3::Event::Creator.new(
+        #         display_name: current_user.full_name,
+        #         email: current_user.email,
+        #         id: current_user.id
+        #     ),
+        #     description: "Prova Evento",
+        #     start: Google::Apis::CalendarV3::EventDateTime.new(
+        #         date: event[:date_attribute_start],
+        #         time_zone: "Europe/Rome"
+        #     ), 
+        #     end: Google::Apis::CalendarV3::EventDateTime.new(
+        #         date: event[:date_attribute_end],
+        #         time_zone: "Europe/Rome"
+        #     ),
+        #     kind: "calendar#event",
+        #     organizer: Google::Apis::CalendarV3::Event::Organizer.new(
+        #         display_name: current_user.full_name,
+        #         email: current_user.email,
+        #         id: current_user.id
+        #     ),
+        #     source: Google::Apis::CalendarV3::Event::Source.new(
+        #         title: "Create Event Method from Calendar Controller",
+        #         url: "http://127.0.0.1/calendar/createCalendar"
+        #     ),
+        #     conference_data: conferenceData
+        # )
+
+        # calendar = Calendar.find_by(managerId: current_user.id, userId: event[:userID])
+
+        # client = get_google_calendar_client current_user
+        # @createdEvent = client.insert_event(calendar.calendarId, calendarEvent)
 
     rescue Google::Apis::AuthorizationError
         secrets = Google::APIClient::ClientSecrets.new({
@@ -183,9 +228,19 @@ class CalendarController < ApplicationController
         client.authorization.refresh!
         current_user.update_attribute(:access_token, client.authorization.access_token)
         current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
+        retry
+    end
+
+    def editEvent
     end
 
     def deleteEvent
+        client = get_google_calendar_client current_user
+        calendar = Calendar.find_by(managerId: "7", userId: "8")
+
+        client.delete_event(calendar.calendarId, "nua6bnrr13jg6f2btun9hs37a4")
+
+        redirect_to manager_path()
     end
 
     def get_google_calendar_client current_user
@@ -241,30 +296,21 @@ class CalendarController < ApplicationController
     end
 
     # Non funziona
-    def rescueUnauthorized(client)
-        secrets = Google::APIClient::ClientSecrets.new({
-            "web" => {
-              "access_token" => current_user.access_token,
-              "refresh_token" => current_user.refresh_token,
-              "client_id" => ENV["GOOGLE_OAUTH_CLIENT_ID"],
-              "client_secret" => ENV["GOOGLE_OAUTH_CLIENT_SECRET"]
-            }
-        })
-        client.authorization = secrets.to_authorization
-        client.authorization.grant_type = "refresh_token"
+    # def rescueUnauthorized(client)
+    #     secrets = Google::APIClient::ClientSecrets.new({
+    #         "web" => {
+    #           "access_token" => current_user.access_token,
+    #           "refresh_token" => current_user.refresh_token,
+    #           "client_id" => ENV["GOOGLE_OAUTH_CLIENT_ID"],
+    #           "client_secret" => ENV["GOOGLE_OAUTH_CLIENT_SECRET"]
+    #         }
+    #     })
+    #     client.authorization = secrets.to_authorization
+    #     client.authorization.grant_type = "refresh_token"
 
-        client.authorization.refresh!
-        current_user.update_attribute(:access_token, client.authorization.access_token)
-        current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
-    end
-
-    def eventCreation
-
-        #Array dei partecipanti, di default Manager e Cliente
-        eventAttendeeArray = Array.new
-
-        event = Google::Apis::CalendarV3::Event.new()
-
-    end
+    #     client.authorization.refresh!
+    #     current_user.update_attribute(:access_token, client.authorization.access_token)
+    #     current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
+    # end
 end
     
