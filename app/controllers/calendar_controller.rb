@@ -135,7 +135,7 @@ class CalendarController < ApplicationController
         @userID = params[:userID]
     end
 
-    # OK, Sistemare form e dati relativi
+    # OK, DA PROVARE CON POST
     def createEventConfirm
         event = params[:event]
         userID = event[:userID]
@@ -206,8 +206,18 @@ class CalendarController < ApplicationController
         client = get_google_calendar_client current_user
         @createdEvent = client.insert_event(calendar.calendarId, calendarEvent, conference_data_version: 1)
 
+        @eventRecord = Event.new()
 
+        @eventRecord.summary = @createdEvent.summary
+        @eventRecord.description = @createdEvent.description
+        @eventRecord.start = @createdEvent.start.date
+        @eventRecord.end = @createdEvent.end.date
+        @eventRecord.meetCode = @createdEvent.conference_data.conference_id
+        @eventRecord.calendarID = calendar.calendarId
+        @eventRecord.eventID = @createdEvent.id
 
+        @eventRecord.save
+        
     rescue Google::Apis::AuthorizationError
         secrets = Google::APIClient::ClientSecrets.new({
             "web" => {
@@ -227,16 +237,31 @@ class CalendarController < ApplicationController
     end
 
     def editEvent
+        @event = Event.find(params[:format])
     end
 
     def listEvent
+        @eventList = Event.all
+        @userID = params[:userID]
     end
 
-    def getEventData
-        client = get_google_calendar_client current_user
-        calendar = Calendar.find_by(managerId: current_user.id, userId: params[:userID])
+    def reviewEvent
+        event = params[:event]
 
-        @event = client.get_event(calendar.calendarId, "3cvprgl4lq17t84d4ukcogquqs")
+        @event = Event.find(event[:eventID])
+
+        client = get_google_calendar_client current_user
+
+        eventToEdit = client.get_event(@event.calendarID, @event.eventID)
+
+        eventToEdit.summary = event[:summary]
+        eventToEdit.description = event[:description]
+        eventToEdit.start.date = event[:start]
+        eventToEdit.end.date = event[:end]
+        eventToEdit.conference_data.conference_id = event[:meetCode]
+
+        @editedEvent = client.patch_event(@event.calendarID, @event.eventID, eventToEdit)
+        # redirect_to manager_path()
     end
 
     def deleteEvent
@@ -300,22 +325,5 @@ class CalendarController < ApplicationController
         return calendarToSave
     end
 
-    # Non funziona
-    # def rescueUnauthorized(client)
-    #     secrets = Google::APIClient::ClientSecrets.new({
-    #         "web" => {
-    #           "access_token" => current_user.access_token,
-    #           "refresh_token" => current_user.refresh_token,
-    #           "client_id" => ENV["GOOGLE_OAUTH_CLIENT_ID"],
-    #           "client_secret" => ENV["GOOGLE_OAUTH_CLIENT_SECRET"]
-    #         }
-    #     })
-    #     client.authorization = secrets.to_authorization
-    #     client.authorization.grant_type = "refresh_token"
-
-    #     client.authorization.refresh!
-    #     current_user.update_attribute(:access_token, client.authorization.access_token)
-    #     current_user.update_attribute(:refresh_token, client.authorization.refresh_token)
-    # end
 end
     
