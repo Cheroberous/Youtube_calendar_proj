@@ -1,4 +1,6 @@
 class AziendaController < ApplicationController
+    before_action:require_user_logged_in!
+    before_action:are_you_an_azienda
 
     def index
         @users = User.all

@@ -95,7 +95,7 @@
               <div class="d-flex justify-content-center m-4">
                 <% affiliation= Affiliation.where(cliente: current_user.id).where(manager: @profilato.id).take%>
                 <% if affiliation%>
-                   <a href="/utility/annulla?id=<%=affiliation.id%>"><button type="button" class="btn btn-danger">Annulla Richiesta</button></a>
+                  <a href="/utility/annulla?id=<%=affiliation.id%>"><button type="button" class="btn btn-danger">Annulla Richiesta</button></a>
                 <% else%>
                   <a href="/affiliations/new?manager=<%=@profilatoId%>"><button type="button" class="btn btn-danger">Affiliati</button></a>
                 <% end%>

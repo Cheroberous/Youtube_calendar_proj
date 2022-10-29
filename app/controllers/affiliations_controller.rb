@@ -19,8 +19,10 @@ class AffiliationsController < ApplicationController
     if current_user.ruolo=="cliente"
       @cliente= current_user.id
       @manager= params[:manager]
+      is_it_a_manager(User.find(@manager))
     else 
       @cliente= params[:cliente]
+      is_it_a_cliente(User.find(@cliente))
       @manager= current_user.id
     end
 
