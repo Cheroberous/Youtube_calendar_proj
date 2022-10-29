@@ -17,10 +17,6 @@ Rails.application.routes.draw do
   get '/cliente' => 'cliente#search'
   get '/cliente/function' => 'cliente#function'
    get '/cliente/managerprofile' => 'cliente#visualize'
-  #per yt
-  # Auth YouTube Channel.
-  get '/youtube_sessions', to: 'youtube_sessions#new'
-  get '/youtube_sessions/callback', to: 'youtube_sessions#callback'
 
   get '/manager' => 'manager#index'
   get '/manager/affiliazioni' => 'manager#affiliazioni'
@@ -47,5 +43,6 @@ Rails.application.routes.draw do
   get "calendar/createEventConfirm" , to: "calendar#createEventConfirm"
   get "calendar/editEvent" , to: "calendar#createEvent"
   get "calendar/deleteEvent" , to: "calendar#deleteEvent"
+  get "calendar/getEvent" , to: "calendar#getEventData"
 
 end

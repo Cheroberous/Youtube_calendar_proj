@@ -1,0 +1,21 @@
+ID
+<%= @event.id %>
+<br>
+ConferenceID
+<%= @event.conference_data.conference_id %>
+<br>
+AccessCode
+<%= @event.conference_data.entry_points[0].access_code %>
+<br>
+Type
+<%= @event.conference_data.entry_points[0].entry_point_type %>
+<br>
+Label
+<%= @event.conference_data.entry_points[0].label %>
+<br>
+Meeting Code
+<%= @event.conference_data.entry_points[0].meeting_code  %>
+<br>
+Passcode
+<%= @event.conference_data.entry_points[0].passcode  %>
+<br>

@@ -19,6 +19,4 @@ Scenario: log_in
   Then I should be on the Managemyoutube home page
   When I go to cliente_s_m
   Then I should be on cliente_s_m
-  When I go to un_manager
   When I go to nuova_affilia
-  Then I should be on nuova_aff
