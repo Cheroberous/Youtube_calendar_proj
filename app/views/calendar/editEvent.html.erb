@@ -5,10 +5,13 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 
-<%# DA PROVARE CON method: :post %>
-<%= form_with model: @event, url: "createEventConfirm", method: :get do |form| %>   
+<%= form_for @event do |form| %>   
     <div class = "container p-5">
         <div class="row pb-2">
+            <div class="col-1">
+                <%= form.label :id, "ID:", class: "form-label mb-0" %>
+                <%= form.text_field :id, class: "form-control", :disabled => true%>
+            </div>
             <div class="col">
                 <%= form.label :summary, "Titolo:", class: "form-label mb-0" %>
                 <%= form.text_field :summary, class: "form-control" %>
@@ -17,30 +20,26 @@
                 <%= form.label :description, "Descrizione:", class: "form-label" %>
                 <%= form.text_area :description, class: "form-control", size: "70x2" %>
             </div>
+            
+        </div>
+        <div class = "row">
+            <div class="col">
+                <%= form.label :meetCode, "Codice Meet (Modificare con cautela):", class: "form-label mb-0" %>
+                <%= form.text_field :meetCode, class: "form-control" %>
+            </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <%= form.label :date_attributes, "Data inizio:" , class: "form-label mb-0" %>
-                <%= form.date_field :date_attribute_start, class: "form-control" %>
+                <%= form.label :start, "Data inizio:" , class: "form-label mb-0" %>
+                <%= form.date_field :start, class: "form-control" %>
             </div>
 
             <div class="col">
-                <%= form.label :date_attributes, "Data fine:" , class: "form-label mb-0" %>
-                <%= form.date_field :date_attribute_end, class: "form-control" %>
+                <%= form.label :end, "Data fine:" , class: "form-label mb-0" %>
+                <%= form.date_field :end, class: "form-control" %>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-4">
-                <%= form.label :meetConference, "Creare conferenza meet?" %>
-            </div>
-            <div class="col-1">
-                <%= form.check_box :meetConference %>
-            </div>
-            <div class="col-7"></div>
-        </div>
-        
 
         <div class="row">
             <div class="col-5"></div>
@@ -52,8 +51,7 @@
         </div>  
 
         <%# Passa ID del cliente corrente %>
-
-        <%= form.hidden_field :userID, value: @userID %>
+        <%= form.hidden_field :eventID, value: @event.id %>
     </div>
 
     
