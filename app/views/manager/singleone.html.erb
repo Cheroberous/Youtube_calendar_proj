@@ -172,6 +172,10 @@
                                             <%= link_to calendar_deleteEvent_path(userID: @cliente.id) do %>
                                                 <li class="btn btnevent mt-1" style="width:100%; background-color:rgb(4, 238, 255);">Elimina Evento</li>
                                             <% end %>
+
+                                            <%= link_to calendar_getEvent_path(userID: @cliente.id) do %>
+                                                <li class="btn btnevent mt-1" style="width:100%; background-color:rgb(4, 238, 255);">Get Evento</li>
+                                            <% end %>
                                         </div>
                                     </div>
                                     <%end%>

@@ -43,5 +43,6 @@ Rails.application.routes.draw do
   get "calendar/createEventConfirm" , to: "calendar#createEventConfirm"
   get "calendar/editEvent" , to: "calendar#createEvent"
   get "calendar/deleteEvent" , to: "calendar#deleteEvent"
+  get "calendar/getEvent" , to: "calendar#getEventData"
 
 end

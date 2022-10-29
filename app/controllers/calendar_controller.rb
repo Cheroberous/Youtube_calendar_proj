@@ -6,6 +6,8 @@ require 'date'
 
 require 'json'
 
+require 'securerandom'
+
 # Sistemare refresh token, non richiede nuovo token
 
 class CalendarController < ApplicationController
@@ -142,76 +144,69 @@ class CalendarController < ApplicationController
         # @newEvent.summary = event[:summary]
         # @newEvent.save
 
-        # if event[:meetConference] == 1
-            
-        # else
-        #     conferenceData = nil
-        # end 
+        # Controlla la scelta di creazione della conferenza meet dal form
+        if event[:meetConference]
+            conferenceData = {
+                create_request: {
+                   request_id: SecureRandom.uuid
+                }
+            }
+        else
+            conferenceData = nil
+        end 
 
-        @conferenceData = Google::Apis::CalendarV3::ConferenceData.new(
-            create_request: Google::Apis::CalendarV3::CreateConferenceRequest.new(
-                conference_solution_key: Google::Apis::CalendarV3::ConferenceSolutionKey.new(
-                    type: "hangoutsMeet"
-                )
-            )<.........
-            
-            
-            
-            
-            
-            +-
+        cliente = User.find_by(id: userID)
+
+        manager = Google::Apis::CalendarV3::EventAttendee.new(
+            display_name: current_user.full_name,
+            email: current_user.email,
+            id: current_user.id, 
+            organizer: true
         )
 
-        # cliente = User.find_by(id: userID)
+        clienteAttendee =  Google::Apis::CalendarV3::EventAttendee.new(
+            display_name: cliente.full_name,
+            email: cliente.email,
+            id: cliente.id, 
+            organizer: true
+        )
 
-        # manager = Google::Apis::CalendarV3::EventAttendee.new(
-        #     display_name: current_user.full_name,
-        #     email: current_user.email,
-        #     id: current_user.id, 
-        #     organizer: true
-        # )
+        calendarEvent = Google::Apis::CalendarV3::Event.new(
+            summary: event[:summary],
+            attendees: [manager, clienteAttendee],
+            creator: Google::Apis::CalendarV3::Event::Creator.new(
+                display_name: current_user.full_name,
+                email: current_user.email,
+                id: current_user.id
+            ),
+            description: "Prova Evento",
+            start: Google::Apis::CalendarV3::EventDateTime.new(
+                date: event[:date_attribute_start],
+                time_zone: "Europe/Rome"
+            ), 
+            end: Google::Apis::CalendarV3::EventDateTime.new(
+                date: event[:date_attribute_end],
+                time_zone: "Europe/Rome"
+            ),
+            kind: "calendar#event",
+            organizer: Google::Apis::CalendarV3::Event::Organizer.new(
+                display_name: current_user.full_name,
+                email: current_user.email,
+                id: current_user.id
+            ),
+            source: Google::Apis::CalendarV3::Event::Source.new(
+                title: "Create Event Method from Calendar Controller",
+                url: "http://127.0.0.1/calendar/createCalendar"
+            ),
+            conference_data: conferenceData
+        )
 
-        # clienteAttendee =  Google::Apis::CalendarV3::EventAttendee.new(
-        #     display_name: cliente.full_name,
-        #     email: cliente.email,
-        #     id: cliente.id, 
-        #     organizer: true
-        # )
+        calendar = Calendar.find_by(managerId: current_user.id, userId: event[:userID])
 
-        # calendarEvent = Google::Apis::CalendarV3::Event.new(
-        #     summary: event[:summary],
-        #     attendees: [manager, clienteAttendee],
-        #     creator: Google::Apis::CalendarV3::Event::Creator.new(
-        #         display_name: current_user.full_name,
-        #         email: current_user.email,
-        #         id: current_user.id
-        #     ),
-        #     description: "Prova Evento",
-        #     start: Google::Apis::CalendarV3::EventDateTime.new(
-        #         date: event[:date_attribute_start],
-        #         time_zone: "Europe/Rome"
-        #     ), 
-        #     end: Google::Apis::CalendarV3::EventDateTime.new(
-        #         date: event[:date_attribute_end],
-        #         time_zone: "Europe/Rome"
-        #     ),
-        #     kind: "calendar#event",
-        #     organizer: Google::Apis::CalendarV3::Event::Organizer.new(
-        #         display_name: current_user.full_name,
-        #         email: current_user.email,
-        #         id: current_user.id
-        #     ),
-        #     source: Google::Apis::CalendarV3::Event::Source.new(
-        #         title: "Create Event Method from Calendar Controller",
-        #         url: "http://127.0.0.1/calendar/createCalendar"
-        #     ),
-        #     conference_data: conferenceData
-        # )
+        client = get_google_calendar_client current_user
+        @createdEvent = client.insert_event(calendar.calendarId, calendarEvent, conference_data_version: 1)
 
-        # calendar = Calendar.find_by(managerId: current_user.id, userId: event[:userID])
 
-        # client = get_google_calendar_client current_user
-        # @createdEvent = client.insert_event(calendar.calendarId, calendarEvent)
 
     rescue Google::Apis::AuthorizationError
         secrets = Google::APIClient::ClientSecrets.new({
@@ -232,6 +227,16 @@ class CalendarController < ApplicationController
     end
 
     def editEvent
+    end
+
+    def listEvent
+    end
+
+    def getEventData
+        client = get_google_calendar_client current_user
+        calendar = Calendar.find_by(managerId: current_user.id, userId: params[:userID])
+
+        @event = client.get_event(calendar.calendarId, "3cvprgl4lq17t84d4ukcogquqs")
     end
 
     def deleteEvent
