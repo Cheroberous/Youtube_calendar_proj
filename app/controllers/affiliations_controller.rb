@@ -46,6 +46,14 @@ class AffiliationsController < ApplicationController
     @cliente= affiliation_params[:cliente]
     @manager= affiliation_params[:manager]
     @azienda= affiliation_params[:azienda]
+
+    #Controlla se l'utente è già affiliato con un manager
+    affiliation_check= Affiliation.where(cliente: @cliente).take
+    if !@azienda && affiliation_check
+      redirect_to ''
+      return
+    end
+
     respond_to do |format|
       if @affiliation.save
         if current_user.ruolo=="cliente"
