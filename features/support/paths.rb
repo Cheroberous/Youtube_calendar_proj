@@ -37,6 +37,9 @@ module NavigationHelpers
     when /^nuova_affilia/
       '/affiliations/new?manager=2'
 
+    when /^nuova_aff/
+      '/affiliations/new'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

@@ -4,6 +4,12 @@ class User < ApplicationRecord
   devise :omniauthable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, omniauth_providers: [:google_oauth2]
 
+  validates :ruolo, :email, :password, presence: true
+  
+
+
+ 
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -20,3 +26,13 @@ class User < ApplicationRecord
   
   has_one_attached :avatar
 end
+
+=begin
+t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+=end
