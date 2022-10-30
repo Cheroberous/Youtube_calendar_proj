@@ -19,6 +19,4 @@ class User < ApplicationRecord
   end
   
   has_one_attached :avatar
-
-  has_many :videos
 end

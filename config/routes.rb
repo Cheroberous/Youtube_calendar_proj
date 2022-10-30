@@ -49,14 +49,5 @@ Rails.application.routes.draw do
   patch "/event", to: "calendar#reviewEvent"
 
   get "/YTProva", to: "youtube#youtubeListProva"
-  get "/upload", to: "youtube#upload"
-  get "/caricati", to: "youtube#videoCaricati"
-  
-  get "/videocaricati", to: "videos#index"
-
-  get '/auth/:provider/callback', to: 'sessions#create'
-  get '/auth/failure', to: 'sessions#fail'
-  post '/videos/get_upload_token', to: 'videos#get_upload_token', as: :get_upload_token
-  get '/videos/get_video_uid', to: 'videos#get_video_uid', as: :get_video_uid
 
 end
