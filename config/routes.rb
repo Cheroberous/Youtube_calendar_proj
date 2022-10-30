@@ -57,4 +57,6 @@ Rails.application.routes.draw do
   patch "/event", to: "calendar#reviewEvent"
 
   get "/YTProva", to: "youtube#youtubeListProva"
+
+  get "/oauth2callback", to: "prova_calendar#oauth2callback"
 end

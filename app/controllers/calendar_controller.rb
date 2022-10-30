@@ -1,18 +1,39 @@
 require "google/apis/calendar_v3"
-require "google/apis/youtube_v3"
+require 'googleauth'
+require 'googleauth/stores/file_token_store'
 
 require "google/api_client/client_secrets.rb"
 require 'open-uri'
 require 'date'
 
+require 'fileutils'
 require 'json'
 
 require 'securerandom'
+
+require 'rubygems'
 
 # Sistemare refresh token, non richiede nuovo token
 
 class CalendarController < ApplicationController
     # :helper_method :createEvent
+
+    SCOPE = ['https://www.googleapis.com/auth/calendar',
+            'https://www.googleapis.com/auth/calendar.events',
+            'https://www.googleapis.com/auth/calendar.events.readonly',
+            'https://www.googleapis.com/auth/calendar.readonly',
+            'https://www.googleapis.com/auth/calendar.settings.readonly',
+            'https://www.googleapis.com/auth/youtube',
+            'https://www.googleapis.com/auth/youtube.force-ssl',
+            'https://www.googleapis.com/auth/youtube.readonly',
+            'https://www.googleapis.com/auth/youtube.upload',
+            'https://www.googleapis.com/auth/youtubepartner',
+            'https://www.googleapis.com/auth/youtubepartner-channel-audit']
+
+    CLIENT_SECRETS_PATH = 'app/controllers/client_secret.json'
+    CREDENTIALS_PATH = "app/controllers/youtube-quickstart-ruby-credentials.yaml"
+    REDIRECT_URI = 'http://localhost:3000/oauth2callback'
+    APPLICATION_NAME = 'Progetto LASSI'
 
     def new
         @calendar = Calendar.new
@@ -208,7 +229,11 @@ class CalendarController < ApplicationController
             calendar = Calendar.find_by(managerId: event[:userID], userId: current_user.id)
         end
 
-        client = get_google_calendar_client current_user
+        # client = get_google_calendar_client current_user
+        client = Google::Apis::CalendarV3::CalendarService.new
+        client.client_options.application_name = APPLICATION_NAME
+        client.authorization = authorize
+
         @createdEvent = client.insert_event(calendar.calendarId, calendarEvent, conference_data_version: 1)
 
         @eventRecord = Event.new()
@@ -347,6 +372,27 @@ class CalendarController < ApplicationController
 
         return calendarToSave
     end
+
+    def authorize
+        FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
+      
+        client_id = Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
+        token_store = Google::Auth::Stores::FileTokenStore.new(file: CREDENTIALS_PATH)
+        authorizer = Google::Auth::UserAuthorizer.new(
+          client_id, SCOPE, token_store)
+        user_id = 'default'
+        credentials = authorizer.get_credentials(user_id)
+        if credentials.nil?
+          url = authorizer.get_authorization_url(base_url: REDIRECT_URI)
+          puts "Open the following URL in the browser and enter the " +
+               "resulting code after authorization"
+          puts url
+          code = gets
+          credentials = authorizer.get_and_store_credentials_from_code(
+            user_id: user_id, code: code, base_url: REDIRECT_URI)
+        end
+        credentials
+      end
 
 end
     
