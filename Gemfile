@@ -87,3 +87,11 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem 'google-api-client'
 # gem 'google-api-client', require: 'google/apis/calendar_v3'
 
+
+gem 'yt', '~> 0.13.7'
+#gem 'bootstrap-sass', '~> 3.3.0.1'
+gem 'autoprefixer-rails'
+gem 'rails-observers'
+gem 'active_type', '0.3.1'
+
+gem 'httparty', '~> 0.18.1'
