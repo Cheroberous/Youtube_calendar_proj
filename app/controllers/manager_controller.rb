@@ -9,7 +9,7 @@ class ManagerController < ApplicationController
     end
 
     def affiliazioni
-        @affiliazioni=Affiliation.all
+        @affiliazioni = Affiliation.all
     end
 
     def aziende
