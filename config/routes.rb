@@ -1,6 +1,8 @@
 Rails.application.routes.draw do   
   resources :affiliations
   resources :reviews
+  resources :videos, only: [:index, :new, :create]
+  resources :video_uploads, only: [:new, :create]
   root 'pages#home'
   
   devise_for :users, controllers: {
@@ -49,5 +51,9 @@ Rails.application.routes.draw do
   patch "/event", to: "calendar#reviewEvent"
 
   get "/YTProva", to: "youtube#youtubeListProva"
+
+  get "/inizio", to: "videos#index"
+  get '/auth/:provider/callback', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy', as: :logout
 
 end
