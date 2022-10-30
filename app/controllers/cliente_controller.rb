@@ -1,4 +1,3 @@
-
 class ClienteController < ApplicationController
 
     before_action:require_user_logged_in!
@@ -16,5 +15,4 @@ class ClienteController < ApplicationController
         @profilato = User.find(params[:id])
         is_it_a_manager(@profilato)
     end
-
 end

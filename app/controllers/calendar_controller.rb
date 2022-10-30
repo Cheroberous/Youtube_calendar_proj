@@ -19,6 +19,7 @@ class CalendarController < ApplicationController
     end
 
     def create
+        
         # Da testare
         userID = params[:userID]
 
@@ -131,15 +132,22 @@ class CalendarController < ApplicationController
         retry
     end
 
+    # OK Cliente e OK Manager
     def createEvent
         @event = Event.new
-        @userID = params[:userID]
+
+        if current_user.ruolo === "manager"
+            @userID = params[:userID]
+        else
+            @userID = params[:managerID]
+        end
     end
 
-    # OK, DA PROVARE CON POST
+    # OK Cliente e OK Manager
     def createEventConfirm
         event = params[:event]
         userID = event[:userID]
+
         # Da sistemare con tutti i dati
         # @newEvent = Event.new()
         # @newEvent.summary = event[:summary]
@@ -156,25 +164,17 @@ class CalendarController < ApplicationController
             conferenceData = nil
         end 
 
-        cliente = User.find_by(id: userID)
-
-        # manager = Google::Apis::CalendarV3::EventAttendee.new(
-        #     display_name: current_user.full_name,
-        #     email: current_user.email,
-        #     id: current_user.id, 
-        #     organizer: true
-        # )
-
-        clienteAttendee =  Google::Apis::CalendarV3::EventAttendee.new(
-            display_name: cliente.full_name,
-            email: cliente.email,
-            id: cliente.id, 
+        attendeeRecord = User.find_by(id: userID)
+        attendee =  Google::Apis::CalendarV3::EventAttendee.new(
+            display_name: attendeeRecord.full_name,
+            email: attendeeRecord.email,
+            id: attendeeRecord.id, 
             resource: true
         )
 
         calendarEvent = Google::Apis::CalendarV3::Event.new(
             summary: event[:summary],
-            attendees: [clienteAttendee],
+            attendees: [attendee],
             creator: Google::Apis::CalendarV3::Event::Creator.new(
                 display_name: current_user.full_name,
                 email: current_user.email,
@@ -202,7 +202,11 @@ class CalendarController < ApplicationController
             conference_data: conferenceData
         )
 
-        calendar = Calendar.find_by(managerId: current_user.id, userId: event[:userID])
+        if current_user.ruolo === "manager"
+            calendar = Calendar.find_by(managerId: current_user.id, userId: event[:userID])
+        else
+            calendar = Calendar.find_by(managerId: event[:userID], userId: current_user.id)
+        end
 
         client = get_google_calendar_client current_user
         @createdEvent = client.insert_event(calendar.calendarId, calendarEvent, conference_data_version: 1)
@@ -216,12 +220,19 @@ class CalendarController < ApplicationController
         @eventRecord.meetCode = @createdEvent.conference_data.conference_id
         @eventRecord.calendarID = calendar.calendarId
         @eventRecord.eventID = @createdEvent.id
-        @eventRecord.managerID= current_user.id
-        @eventRecord.clienteID= cliente.id
+
+        if current_user.ruolo === "manager"
+            @eventRecord.managerID= current_user.id
+            @eventRecord.clienteID= attendeeRecord.id
+        else
+            @eventRecord.managerID= attendeeRecord.id
+            @eventRecord.clienteID= current_user.id
+        end
 
         @eventRecord.save
         
-        redirect_to '/manager/singleone?cliente='+ cliente.id.to_s
+        # redirect_to '/manager/singleone?cliente='+ cliente.id.to_s
+        redirect_to root_path()
 
     rescue Google::Apis::AuthorizationError
         secrets = Google::APIClient::ClientSecrets.new({
@@ -247,7 +258,11 @@ class CalendarController < ApplicationController
 
     def listEvent
         @eventList = Event.all
-        @userID = params[:userID]
+        if current_user.ruolo === "manager"
+            @userID = params[:userID]
+        else
+            @userID = params[:managerID]
+        end
     end
 
     def reviewEvent

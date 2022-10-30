@@ -16,7 +16,16 @@ Rails.application.routes.draw do
 
   get '/cliente' => 'cliente#search'
   get '/cliente/function' => 'cliente#function'
-   get '/cliente/managerprofile' => 'cliente#visualize'
+  get '/cliente/managerprofile' => 'cliente#visualize'
+
+  # get '/cliente/createEvent' => 'cliente#createEvent'
+  # get '/cliente/createEventConfirm' => 'cliente#createEventConfirm'
+
+  # get "cliente/listEvent" , to: "cliente#listEvent"
+  # get "cliente/deleteEvent" , to: "cliente#deleteEvent"
+
+  # get "/cliente/event", to: "cliente#editEvent"
+  # patch "/cliente/event", to: "cliente#reviewEvent"
 
   get '/manager' => 'manager#index'
   get '/manager/affiliazioni' => 'manager#affiliazioni'
@@ -28,7 +37,6 @@ Rails.application.routes.draw do
   get '/azienda/affiliazioni' => 'azienda#affiliazioni'
   
   get '/affiliations/accept' => 'affiliation#accept'
-
 
   get '/utility/annulla' => 'utility#annulla'
   
@@ -49,14 +57,4 @@ Rails.application.routes.draw do
   patch "/event", to: "calendar#reviewEvent"
 
   get "/YTProva", to: "youtube#youtubeListProva"
-  get "/upload", to: "youtube#upload"
-  get "/caricati", to: "youtube#videoCaricati"
-  
-  get "/videocaricati", to: "videos#index"
-
-  get '/auth/:provider/callback', to: 'sessions#create'
-  get '/auth/failure', to: 'sessions#fail'
-  post '/videos/get_upload_token', to: 'videos#get_upload_token', as: :get_upload_token
-  get '/videos/get_video_uid', to: 'videos#get_video_uid', as: :get_video_uid
-
 end

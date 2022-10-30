@@ -39,5 +39,3 @@ config/credentials.yml.enc
 todo.txt
 
 /config/master.key
-
-/config/master.key
